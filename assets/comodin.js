@@ -6,7 +6,8 @@
   const pad = (n) => String(n).padStart(3, "0");
   const today = () => { const d = new Date(); return d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") + String(d.getDate()).padStart(2, "0"); };
   const fmtFecha = (f) => f && f.length === 8 ? f.slice(6, 8) + "." + f.slice(4, 6) + "." + f.slice(0, 4) : "—";
-  const firstName = (s) => (s || "").trim().split(/\s+/)[0] || "";
+  // Nombre tal como se cargó (todas las palabras), con los espacios normalizados.
+  const firstName = (s) => (s || "").trim().replace(/\s+/g, " ");
 
   /* ---------- link: #007-<nombre y fecha ofuscados> ---------- */
   const enc = new TextEncoder(), dec = new TextDecoder();
