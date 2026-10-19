@@ -57,7 +57,7 @@
   })));
 
   /* ---------- tarjeta ---------- */
-  const INK = "#1F3156", TERRA = "#C98255", PAPER = "#E8D8BC";
+  const INK = "#172644", TERRA = "#C98255", PAPER = "#D9C4A0";
   const STAR = "M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0 Z";
   const EXAMPLES = ["Reunión de trabajo · café ·", "charla de bar · lavar el auto", "· vos elegís ·"];
   const RULES = [
@@ -324,7 +324,7 @@
     x.font = `900 ${fsN}px ${DISP}`; ls0(x); x.textBaseline = "middle"; x.fillText(who, L, y0 + 3.1 * u + gapD + .45 * fsN);
     const lw = spaced(x, "EMITIDO", fLbl, L, y1 - .7 * u, .14 * 3.1 * u);
     x.font = `600 ${3.9 * u}px ${MONO}`; ls0(x); x.textBaseline = "alphabetic"; x.fillText(fmtFecha(c.fecha), L + lw + 2 * u, y1 - .7 * u);
-    pc.save(); pc.globalAlpha = .9; pc.drawImage(ink, 0, 0); pc.restore();
+    pc.save(); pc.globalAlpha = .95; pc.drawImage(ink, 0, 0); pc.restore();
     paperLayer(texImg.base, "soft-light", .8);
     paperLayer(texImg.luz, "screen", .5);
     // perforación, muescas y dientes: agujeros de verdad

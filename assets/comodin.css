@@ -12,7 +12,7 @@
   --danger: #EE9483;
   --ink: #1F3156;      /* tinta azul */
   --terra: #C98255;    /* cartulina del frente */
-  --paper: #E8D8BC;    /* papel del dorso */
+  --paper: #D9C4A0;    /* papel del dorso */
   --f-display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
   --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
@@ -88,6 +88,8 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .paper::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("papel.jpg") center / cover; mix-blend-mode: soft-light; opacity: .8; }
 .paper::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("papel-luz.jpg") center / cover; mix-blend-mode: screen; opacity: .5; }
 .ink { opacity: .9; }
+.front { --ink: #172644; }
+.front .ink { opacity: .95; }
 .frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 /* perforación */
 .notch { position: absolute; top: 104.4cqw; width: 7.2cqw; height: 7.2cqw; border-radius: 50%; background: var(--bg); z-index: 2; }
