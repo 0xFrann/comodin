@@ -112,6 +112,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 20px 56px; }
 .word { position: absolute; left: 0; right: 0; top: 58cqw; text-align: center; font-family: var(--f-display); font-size: 14.5cqw; line-height: 1; color: var(--sun); letter-spacing: .01em; }
 .sub { position: absolute; left: 0; right: 0; top: 76cqw; text-align: center; font-style: italic; font-weight: 500; font-size: 5.6cqw; line-height: 1; }
 .uses { position: absolute; left: 10cqw; right: 10cqw; top: 89cqw; margin: 0; text-align: center; font-family: var(--f-mono); font-weight: 500; font-size: 2.7cqw; line-height: 1.6; letter-spacing: .08em; text-transform: uppercase; color: var(--sun); text-wrap: balance; }
+.choose { position: absolute; left: 0; right: 0; top: 100.4cqw; margin: 0; text-align: center; font-style: italic; font-weight: 500; font-size: 3.8cqw; line-height: 1; }
 .lbl { position: absolute; left: 6.5cqw; top: 113cqw; font-family: var(--f-mono); font-weight: 700; font-size: 2.4cqw; letter-spacing: .14em; line-height: 1; color: rgba(255, 210, 63, .8); }
 .val.para { position: absolute; left: 6.5cqw; top: 116.4cqw; max-width: 64cqw; font-weight: 600; font-size: 6cqw; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .issued { position: absolute; left: 6.5cqw; top: 125.2cqw; display: flex; align-items: baseline; gap: 2cqw; line-height: 1; }

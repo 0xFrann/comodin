@@ -78,7 +78,8 @@
       </svg>
       <div class="word">COMODÍN</div>
       <div class="sub">Vale por 1 día de ${esc(C.corto)}</div>
-      <p class="uses">Un desafío de tu negocio · un proyecto · esa idea que te da vueltas · lavarte el auto</p>
+      <p class="uses">Reunión de trabajo · café · charla de bar · lavar el auto</p>
+      <p class="choose">Vos elegís.</p>
       <span class="notch l"></span><span class="notch r"></span>
       <div class="perf"></div>
       <span class="lbl">PARA</span><span class="val para" data-para>vos</span>
@@ -94,7 +95,7 @@
         <li>Para canjearlo, escribime y armamos el plan juntos.</li>
         <li>Se puede regalar. Si conocés a alguien a quien le sirva más, pasáselo.</li>
         <li>No vence, pero no lo dejes juntando polvo en el chat.</li>
-        <li>Casi todo vale. Las mudanzas de piano las charlamos.</li>
+        <li>Casi todo vale. Confío en tu criterio.</li>
       </ul>
       <span class="notch l"></span><span class="notch r"></span>
       <div class="perf"></div>
@@ -232,8 +233,11 @@
     x.textAlign = "center"; x.fillStyle = SUN; x.font = `400 ${14.5 * u}px "Bowlby One"`; ls(x, `${.01 * 14.5 * u}px`); x.fillText("COMODÍN", W / 2, 58 * u); ls(x, "0px");
     x.fillStyle = WHITE; x.font = `italic 500 ${5.6 * u}px "Instrument Sans"`; x.fillText(`Vale por 1 día de ${C.corto}`, W / 2, 76 * u);
     x.fillStyle = SUN; x.font = `500 ${2.7 * u}px "JetBrains Mono"`; ls(x, `${.08 * 2.7 * u}px`);
-    wrap(x, "UN DESAFÍO DE TU NEGOCIO · UN PROYECTO · ESA IDEA QUE TE DA VUELTAS · LAVARTE EL AUTO", 80 * u).forEach((l, i) => x.fillText(l, W / 2, 89.6 * u + i * 2.7 * 1.6 * u));
+    const uses = wrap(x, "REUNIÓN DE TRABAJO · CAFÉ · CHARLA DE BAR · LAVAR EL AUTO", 80 * u);
+    uses.forEach((l, i) => x.fillText(l, W / 2, 89.6 * u + i * 2.7 * 1.6 * u));
     ls(x, "0px");
+    x.fillStyle = WHITE; x.font = `italic 500 ${3.8 * u}px "Instrument Sans"`;
+    x.fillText("Vos elegís.", W / 2, 89.6 * u + uses.length * 2.7 * 1.6 * u + 1.6 * u);
     // troquel
     x.strokeStyle = "rgba(255,210,63,.6)"; x.lineWidth = .45 * u; x.setLineDash([1.4 * u, 1.2 * u]);
     x.beginPath(); x.moveTo(7 * u, 108 * u); x.lineTo(93 * u, 108 * u); x.stroke(); x.setLineDash([]);
