@@ -89,6 +89,7 @@
     <div class="face back">
       <div class="frame"></div>
       <div class="top-row"><span>LETRA CHICA</span><span>Nº <span data-num>—</span></span></div>
+      <div class="back-body">
       <h3>Términos y condiciones</h3>
       <ul class="rules">
         <li>Vale por un día mío. Vos elegís para qué: un desafío de tu negocio, un proyecto, esa idea que te da vueltas o lavarte el auto.</li>
@@ -97,6 +98,7 @@
         <li>No vence, pero no lo dejes juntando polvo en el chat.</li>
         <li>Casi todo vale. Confío en tu criterio.</li>
       </ul>
+      </div>
       <span class="notch l"></span><span class="notch r"></span>
       <div class="perf"></div>
       <div class="thanks">Gracias por tu tiempo.</div>
@@ -212,12 +214,12 @@
       x.font = `400 ${8.5 * u}px "Bowlby One"`; x.fillText(num, cx, 9 * u);
     };
     corner(); x.save(); x.translate(W, H); x.rotate(Math.PI); corner(); x.restore();
-    // sello
-    x.font = `700 ${2.6 * u}px "JetBrains Mono"`; ls(x, `${.08 * 2.6 * u}px`);
-    const sw = x.measureText("TRANSFERIBLE").width + 4 * u, shh = 2.6 * 1.25 * u + 2.2 * u;
-    x.save(); x.translate(W - 6 * u - sw / 2, 6 * u + shh / 2); x.rotate(-8 * Math.PI / 180);
-    x.strokeStyle = PINK; x.lineWidth = .55 * u; rr(x, -sw / 2, -shh / 2, sw, shh, 1.2 * u); x.stroke();
-    x.fillStyle = PINK; x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("TRANSFERIBLE", 0, .1 * u);
+    // banda
+    x.save(); x.translate(85 * u, 15 * u); x.rotate(Math.PI / 4);
+    x.save(); x.shadowColor = "rgba(8,12,60,.3)"; x.shadowBlur = 1.4 * u; x.shadowOffsetY = .6 * u;
+    x.fillStyle = PINK; x.fillRect(-22 * u, -3 * u, 44 * u, 6 * u); x.restore();
+    x.fillStyle = "#0E1450"; x.font = `700 ${2.6 * u}px "JetBrains Mono"`; ls(x, `${.14 * 2.6 * u}px`);
+    x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("TRANSFERIBLE", .18 * u, .15 * u);
     x.restore(); x.textBaseline = "top"; ls(x, "0px");
     // emblema
     x.save(); x.translate(34 * u, 20 * u); const s = 32 * u / 100; x.scale(s, s);
