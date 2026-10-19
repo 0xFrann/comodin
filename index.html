@@ -80,9 +80,9 @@
     $("#lede").innerHTML = c.nombre
       ? `Gracias por tu tiempo, ${esc(firstName(c.nombre))}.<br><em>Te devuelvo un poco del mío.</em>`
       : `Gracias por tu tiempo.<br><em>Te devuelvo un poco del mío.</em>`;
-    $("#btnCanjear").href = Comodin.waLink(C.whatsapp, `¡Hola ${C.corto}! Tengo el comodín${n} y quiero canjearlo 🎟️`);
+    $("#btnCanjear").href = Comodin.waLink(C.whatsapp, `¡Hola ${C.corto}! Tengo el comodín${n} y quiero canjearlo 🎫`);
     $("#btnPasar").href = Comodin.waLink("", c.n
-      ? `Te paso este comodín de ${C.corto}: vale por 1 día de su tiempo y creo que a vos te sirve más 🎟️\n${Comodin.passLinkOf(c)}`
+      ? `Te paso este comodín de ${C.corto}: vale por 1 día de su tiempo y creo que a vos te sirve más 🎫\n${Comodin.passLinkOf(c)}`
       : `Mirá esto: ${C.base}`);
   }
   addEventListener("hashchange", () => { route(); Comodin.showFront(); });
