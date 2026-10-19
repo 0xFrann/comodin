@@ -41,6 +41,12 @@
     if (d.length === 12 && d.startsWith("54") && d[2] !== "9") d = "549" + d.slice(2);
     return d;
   }
+  function prettyPhone(d) {
+    d = String(d || "").replace(/\D/g, "");
+    if (!d) return "";
+    if (d.length === 13 && d.startsWith("549")) return `+54 9 ${d.slice(3, 6)} ${d.slice(6, 9)}-${d.slice(9)}`;
+    return "+" + d;
+  }
   const waLink = (phone, text) => "https://wa.me/" + (phone || "") + "?text=" + encodeURIComponent(text);
 
   /* ---------- tarjeta ---------- */
@@ -75,8 +81,8 @@
       <p class="uses">Un desafío de tu negocio · un proyecto · esa idea que te da vueltas · lavarte el auto</p>
       <span class="notch l"></span><span class="notch r"></span>
       <div class="perf"></div>
-      <span class="lbl para">PARA</span><span class="val para" data-para>vos</span>
-      <span class="lbl fecha">EMITIDO</span><span class="val fecha" data-fecha>—</span>
+      <span class="lbl">PARA</span><span class="val para" data-para>vos</span>
+      <div class="issued"><span class="lbl">EMITIDO</span><span class="fecha" data-fecha>—</span></div>
       <div class="corner br"><span class="no">Nº</span><span class="num" data-num>—</span></div>
     </div>
     <div class="face back">
@@ -234,11 +240,17 @@
     x.fillStyle = notchColor; [0, W].forEach((px) => { x.beginPath(); x.arc(px, 108 * u, 3.2 * u, 0, Math.PI * 2); x.fill(); });
     // talón
     x.textAlign = "left"; x.fillStyle = "rgba(255,210,63,.8)"; x.font = `700 ${2.4 * u}px "JetBrains Mono"`; ls(x, `${.14 * 2.4 * u}px`);
-    x.fillText("PARA", 6.5 * u, 113 * u); x.fillText("EMITIDO", 50 * u, 113 * u); ls(x, "0px");
-    x.fillStyle = WHITE; let fs = 5; const who = c.nombre || "vos";
-    do { x.font = `600 ${fs * u}px "Instrument Sans"`; fs -= .25; } while (x.measureText(who).width > 41 * u && fs > 3);
-    x.fillText(who, 6.5 * u, 117.4 * u);
-    x.font = `500 ${3.8 * u}px "JetBrains Mono"`; x.fillText(fmtFecha(c.fecha), 50 * u, 118 * u);
+    x.fillText("PARA", 6.5 * u, 113 * u);
+    x.fillStyle = WHITE; let fs = 6; const who = c.nombre || "vos";
+    ls(x, "0px");
+    do { x.font = `600 ${fs * u}px "Instrument Sans"`; fs -= .25; } while (x.measureText(who).width > 64 * u && fs > 3.5);
+    x.fillText(who, 6.5 * u, 116.6 * u);
+    x.textBaseline = "alphabetic";
+    x.fillStyle = "rgba(255,210,63,.8)"; x.font = `700 ${2.4 * u}px "JetBrains Mono"`; ls(x, `${.14 * 2.4 * u}px`);
+    const lw = x.measureText("EMITIDO").width;
+    x.fillText("EMITIDO", 6.5 * u, 128 * u); ls(x, "0px");
+    x.fillStyle = WHITE; x.font = `500 ${3.2 * u}px "JetBrains Mono"`; x.fillText(fmtFecha(c.fecha), 6.5 * u + lw + 2 * u, 128 * u);
+    x.textBaseline = "top";
     x.restore();
   }
   async function makePNG(c) {
@@ -256,5 +268,5 @@
 
   const use = async (n) => { try { return window.claude && window.claude.use ? await window.claude.use(n) : null; } catch (_) { return null; } };
 
-  window.Comodin = { C, use, $, $$, pad, today, fmtFecha, firstName, esc, parse, linkOf, passLinkOf, normPhone, waLink, mount, render, deal, flip, showFront, toast, copyText, selectText, makePNG, drawFront, fontsReady, rr, get current() { return current; } };
+  window.Comodin = { C, use, $, $$, pad, today, fmtFecha, firstName, esc, parse, linkOf, passLinkOf, normPhone, prettyPhone, waLink, mount, render, deal, flip, showFront, toast, copyText, selectText, makePNG, drawFront, fontsReady, rr, get current() { return current; } };
 })();

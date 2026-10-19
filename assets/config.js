@@ -4,6 +4,7 @@ window.COMODIN_CONFIG = {
   corto: "Franco",
   rol: "Product Design Engineer",
   whatsapp: "5493517881648",                       // solo números, con código de país
+  email: "francomdalmasso@gmail.com",
   linkedin: "https://www.linkedin.com/in/franndalmasso",
   cv: "https://0xfrann.github.io/ethereum-tree-seams/cv.pdf",
 

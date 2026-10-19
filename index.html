@@ -21,10 +21,6 @@
 </head>
 <body>
 <main>
-  <header class="top">
-    <div class="brand"><b>Comodín</b> · de Franco</div>
-  </header>
-
   <section class="stage-col">
     <p class="lede" id="lede">Gracias por tu tiempo.<br><em>Te devuelvo un poco del mío.</em></p>
     <div class="stage" id="stage"></div>
@@ -36,14 +32,25 @@
     <div class="actions">
       <a class="btn primary" id="btnCanjear" target="_blank" rel="noopener">Canjear este comodín <small>por WhatsApp</small></a>
       <a class="btn" id="btnPasar" target="_blank" rel="noopener">Pasárselo a alguien</a>
-      <div class="row2">
-        <a class="btn" id="btnLinkedin" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn" id="btnCv" target="_blank" rel="noopener">Mi CV</a>
-      </div>
-      <div class="contact">
-        <span>WhatsApp</span><span class="mono" id="phoneText"></span>
-        <button class="chip-btn" id="copyPhone" type="button">Copiar</button>
-      </div>
+
+      <dl class="contact-list">
+        <div class="row">
+          <dt>Teléfono</dt><dd class="sel" id="phoneText"></dd>
+          <button class="icon-btn" id="copyPhone" type="button" aria-label="Copiar teléfono"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></button>
+        </div>
+        <div class="row">
+          <dt>Email</dt><dd class="sel" id="mailText"></dd>
+          <button class="icon-btn" id="copyMail" type="button" aria-label="Copiar email"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></button>
+        </div>
+        <div class="row">
+          <dt>LinkedIn</dt><dd><a id="lnLinkedin" target="_blank" rel="noopener">franndalmasso</a></dd>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </div>
+        <div class="row">
+          <dt>CV</dt><dd><a id="lnCv" target="_blank" rel="noopener">Ver PDF</a></dd>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </div>
+      </dl>
       <p class="fine">Si conocés a alguien a quien le sirva más que a vos, pasáselo. Para eso está.</p>
     </div>
   </section>
@@ -57,11 +64,14 @@
   Comodin.mount($("#stage"));
   $("#flipBtn").addEventListener("click", Comodin.flip);
 
-  const phonePretty = "+" + C.whatsapp;
-  $("#phoneText").textContent = phonePretty;
-  $("#copyPhone").addEventListener("click", () => Comodin.copyText(phonePretty, $("#phoneText"), "Número copiado"));
-  $("#btnLinkedin").href = C.linkedin;
-  $("#btnCv").href = C.cv;
+  const phone = Comodin.prettyPhone(C.whatsapp);
+  $("#phoneText").textContent = phone;
+  $("#mailText").textContent = C.email;
+  $("#copyPhone").addEventListener("click", () => Comodin.copyText(phone, $("#phoneText"), "Teléfono copiado"));
+  $("#copyMail").addEventListener("click", () => Comodin.copyText(C.email, $("#mailText"), "Email copiado"));
+  $("#lnLinkedin").href = C.linkedin;
+  $("#lnLinkedin").textContent = C.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "");
+  $("#lnCv").href = C.cv;
 
   function route() {
     const c = Comodin.parse(location.hash) || { n: 0, nombre: "", fecha: "" };
