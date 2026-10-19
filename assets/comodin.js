@@ -50,62 +50,90 @@
   const waLink = (phone, text) => "https://wa.me/" + (phone || "") + "?text=" + encodeURIComponent(text);
 
   /* ---------- tarjeta ---------- */
-  const SUN = "#FFD23F", PINK = "#FF6FA8";
-  function ticksSVG() {
-    let h = "";
-    for (let i = 0; i < 12; i++) {
-      const a = i * Math.PI / 6, r1 = 40.5, r2 = i % 3 === 0 ? 35.5 : 37.5;
-      h += `<line x1="${(50 + r1 * Math.sin(a)).toFixed(2)}" y1="${(50 - r1 * Math.cos(a)).toFixed(2)}" x2="${(50 + r2 * Math.sin(a)).toFixed(2)}" y2="${(50 - r2 * Math.cos(a)).toFixed(2)}"/>`;
-    }
-    return h;
+  const INK = "#18243B", TERRA = "#C98255", PAPER = "#E8D8BC";
+  const STAR = "M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0 Z";
+  const EXAMPLES = ["Reunión de trabajo · café ·", "charla de bar · lavar el auto", "· vos elegís ·"];
+  const RULES = [
+    "Vale por un día mío. Vos elegís para qué: un desafío de tu negocio, un proyecto, esa idea que te da vueltas o lavarte el auto.",
+    "Para canjearlo, escribime y armamos el plan juntos.",
+    "Se puede regalar. Si conocés a alguien a quien le sirva más, pasáselo.",
+    "No vence, pero no lo dejes juntando polvo en el chat.",
+    "Casi todo vale. Confío en tu criterio."
+  ];
+  function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+  // Contorno con esquinas cóncavas, concéntricas al corte del boleto (unidades: ancho 100 × alto 140).
+  function framePath(d, R) {
+    const k = Math.sqrt(R * R - d * d).toFixed(2), W = 100, H = 140;
+    return `M${k},${d} H${(W - k).toFixed(2)} A${R} ${R} 0 0 0 ${W - d},${k} V${(H - k).toFixed(2)} A${R} ${R} 0 0 0 ${(W - k).toFixed(2)},${H - d} H${k} A${R} ${R} 0 0 0 ${d},${(H - k).toFixed(2)} V${k} A${R} ${R} 0 0 0 ${k},${d} Z`;
   }
+  const frameSVG = `<svg class="frame" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
+  const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
+  const perfHTML = `<span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   const cardHTML = () => `
   <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
-    <div class="face front">
-      <div class="frame"></div>
-      <div class="corner tl"><span class="no">Nº</span><span class="num" data-num>—</span></div>
-      <div class="stamp">TRANSFERIBLE</div>
-      <svg class="emblem" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="46" fill="none" stroke="${SUN}" stroke-width="3"/>
-        <g stroke="${SUN}" stroke-width="1.6" stroke-linecap="round">${ticksSVG()}</g>
-        <polygon points="30,22 70,22 50,50" fill="${PINK}"/>
-        <polygon points="50,50 30,78 70,78" fill="${PINK}"/>
-        <polygon points="42,44 58,44 50,50" fill="${SUN}"/>
-        <line x1="50" y1="50" x2="50" y2="67" stroke="${SUN}" stroke-width="1.6"/>
-        <polygon points="38,78 62,78 50,66" fill="${SUN}"/>
-        <rect x="26" y="18.5" width="48" height="3.5" rx="1.5" fill="${SUN}"/>
-        <rect x="26" y="78" width="48" height="3.5" rx="1.5" fill="${SUN}"/>
-      </svg>
-      <div class="word">COMODÍN</div>
-      <div class="sub">Vale por 1 día de ${esc(C.corto)}</div>
-      <p class="uses">Reunión de trabajo · café · charla de bar · lavar el auto</p>
-      <p class="choose">Vos elegís.</p>
-      <span class="notch l"></span><span class="notch r"></span>
-      <div class="perf"></div>
-      <span class="lbl">PARA</span><span class="val para" data-para>vos</span>
-      <div class="issued"><span class="lbl">EMITIDO</span><span class="fecha" data-fecha>—</span></div>
-      <div class="corner br"><span class="no">Nº</span><span class="num" data-num>—</span></div>
-    </div>
-    <div class="face back">
-      <div class="frame"></div>
-      <div class="top-row"><span>LETRA CHICA</span><span>Nº <span data-num>—</span></span></div>
-      <div class="back-body">
-      <h3>Términos y condiciones</h3>
-      <ul class="rules">
-        <li>Vale por un día mío. Vos elegís para qué: un desafío de tu negocio, un proyecto, esa idea que te da vueltas o lavarte el auto.</li>
-        <li>Para canjearlo, escribime y armamos el plan juntos.</li>
-        <li>Se puede regalar. Si conocés a alguien a quien le sirva más, pasáselo.</li>
-        <li>No vence, pero no lo dejes juntando polvo en el chat.</li>
-        <li>Casi todo vale. Confío en tu criterio.</li>
-      </ul>
+    <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
+      ${frameSVG}
+      <div class="f-top">
+        <div class="f-row">
+          <div class="f-serial"><span class="f-num" data-num>—</span></div>
+          <div class="f-transf"><span class="fill" data-fill="spread" data-max="9">Transferible</span></div>
+        </div>
+        <div class="f-rule"></div>
+        <div class="f-vale-row">${starSVG}<span class="f-vale fill" data-fill="spread" data-max="32" data-inset="star">VALE</span>${starSVG}</div>
+        <span class="f-canje fill" data-fill="spread" data-max="7">Canjeable por 1 día con ${esc(C.corto)}</span>
+        <div class="f-rule"></div>
+        <div class="f-ex">${EXAMPLES.map((t) => `<span class="fill" data-fill="spread" data-max="7.5" data-group="ex">${esc(t)}</span>`).join("")}</div>
       </div>
-      <span class="notch l"></span><span class="notch r"></span>
-      <div class="perf"></div>
-      <div class="thanks">Gracias por tu tiempo.</div>
-      <div class="sign">${esc(C.nombre)} · ${esc(C.rol)}</div>
-    </div>
+      ${perfHTML}
+      <div class="f-bot">
+        <div class="f-data">
+          <span class="f-lbl">PARA</span>
+          <span class="f-para fill" data-fill="shrink" data-max="9" data-para>vos</span>
+          <div class="f-issued"><span class="f-lbl">EMITIDO</span><span class="f-fecha" data-fecha>—</span></div>
+        </div>
+        <div class="f-big"><span class="f-num" data-num>—</span></div>
+      </div>
+    </div></div></div></div>
+    <div class="face back"><div class="shadow"><div class="shape"><div class="paper">
+      ${frameSVG}
+      <div class="b-body">
+        <h3 class="b-title fill" data-fill="shrink" data-max="12">Términos y condiciones</h3>
+        <ul class="b-rules">${RULES.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+      </div>
+      ${perfHTML}
+      <div class="b-sign">${esc(C.nombre)} · ${esc(C.rol)}</div>
+    </div></div></div></div>
   </div>`;
-  function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+  // Cada línea con data-fill ocupa todo su ancho: "spread" agranda la letra hasta un tope y reparte el sobrante como
+  // espaciado; "shrink" solo achica. Las líneas de un mismo data-group comparten tamaño. Mide sin transformaciones 3D.
+  function fit(root) {
+    root = root || document;
+    root.querySelectorAll(".face").forEach((face) => {
+      const u = face.clientWidth / 100;
+      if (!u) return;
+      const boxOf = (el) => el.dataset.inset === "star"
+        ? el.parentElement.clientWidth - 24 * u
+        : el.parentElement.clientWidth;
+      const reset = (el, fs) => { el.style.letterSpacing = "0px"; el.style.marginRight = "0px"; el.style.fontSize = fs + "px"; };
+      const groups = {};
+      face.querySelectorAll(".fill[data-group]").forEach((el) => {
+        reset(el, parseFloat(el.dataset.max) * u);
+        const r = boxOf(el) / el.offsetWidth;
+        groups[el.dataset.group] = Math.min(groups[el.dataset.group] ?? 1, r);
+      });
+      face.querySelectorAll(".fill").forEach((el) => {
+        const max = parseFloat(el.dataset.max) * u * (el.dataset.group ? Math.min(1, groups[el.dataset.group]) : 1);
+        reset(el, max);
+        const box = boxOf(el), w = el.offsetWidth, n = [...el.textContent].length;
+        if (w > box) { el.style.fontSize = (max * box / w) + "px"; return; }
+        if (el.dataset.fill === "spread" && n > 1) {
+          const ls = (box - w) / (n - 1);
+          el.style.letterSpacing = ls + "px"; el.style.marginRight = -ls + "px";
+        }
+      });
+    });
+  }
 
   let current = { n: 0, nombre: "", fecha: "" };
   function render(c) {
@@ -114,6 +142,7 @@
     $("[data-para]").textContent = current.nombre || "vos";
     $("[data-fecha]").textContent = fmtFecha(current.fecha);
     $("#card").setAttribute("aria-label", `Comodín${current.n ? " Nº " + pad(current.n) : ""}${current.nombre ? " para " + current.nombre : ""}. Tocá para darlo vuelta.`);
+    fit($("#card"));
   }
 
   /* ---------- interacción 3D ---------- */
@@ -125,14 +154,14 @@
       : mode === "hover" ? "transform .18s ease-out"
       : mode === "deal" ? "transform 1.3s cubic-bezier(.2,.8,.2,1)" : "none";
     card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-    card.style.setProperty("--gx", (50 + Math.sin(ry * Math.PI / 180) * 45) + "%");
-    card.style.setProperty("--gy", (35 - rx * 1.4) + "%");
   }
   function flip() { base += 180; ry = base; rx = 0; apply("snap"); }
   function showFront() { base = Math.round(base / 360) * 360; ry = base; rx = 0; apply("snap"); }
   function mount(stage) {
     stage.innerHTML = cardHTML();
     card = $("#card", stage);
+    try { new ResizeObserver(() => fit(card)).observe(card); } catch (_) {}
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fit(card));
     card.addEventListener("pointerdown", (e) => {
       drag = { x: e.clientX, y: e.clientY, ry0: ry, rx0: rx, moved: false };
       try { card.setPointerCapture(e.pointerId); } catch (_) {}
@@ -183,96 +212,132 @@
   }
 
   /* ---------- imagen (canvas) ---------- */
-  function rr(x, X, Y, W, H, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + W, Y, X + W, Y + H, r); x.arcTo(X + W, Y + H, X, Y + H, r); x.arcTo(X, Y + H, X, Y, r); x.arcTo(X, Y, X + W, Y, r); x.closePath(); }
-  function wrap(x, text, maxW) {
-    const words = text.split(" "), lines = []; let line = "";
-    for (const w of words) { const t = line ? line + " " + w : w; if (x.measureText(t).width > maxW && line) { lines.push(line); line = w; } else line = t; }
-    if (line) lines.push(line); return lines;
-  }
-  const ls = (x, v) => { if ("letterSpacing" in x) x.letterSpacing = v; };
+  const DISP = '"Big Shoulders Display", "Arial Narrow", sans-serif', MONO = '"IBM Plex Mono", Menlo, monospace';
   async function fontsReady() {
-    const f = ['400 40px "Bowlby One"', 'italic 500 40px "Instrument Sans"', '600 40px "Instrument Sans"', '700 40px "JetBrains Mono"', '500 40px "JetBrains Mono"'];
-    try { await Promise.all(f.map((s) => document.fonts.load(s, "ÍÑº0"))); } catch (_) {}
+    const f = ['900 40px "Big Shoulders Display"', '800 40px "Big Shoulders Display"', '500 40px "Big Shoulders Display"', '600 40px "IBM Plex Mono"', '500 40px "Barlow"', 'italic 600 40px "Barlow"', '600 40px "Barlow"'];
+    try { await Promise.all(f.map((s) => document.fonts.load(s, "ÍÉÓÚÑº0"))); } catch (_) {}
   }
-  // Dibuja el frente de la tarjeta con el origen en (0,0) y ancho W. `notchColor` = fondo detrás.
-  function drawFront(x, c, W, notchColor) {
-    const H = W * 1.4, u = W / 100, COB = "#2338C9", WHITE = "#FFFFFF";
-    x.save(); rr(x, 0, 0, W, H, 5 * u); x.clip();
-    const g = x.createLinearGradient(0, 0, W * .55, H); g.addColorStop(0, "#2A41D8"); g.addColorStop(.45, COB); g.addColorStop(1, "#1A2BA6");
-    x.fillStyle = g; x.fillRect(0, 0, W, H);
-    const sh = x.createRadialGradient(W * .3, H * .2, 0, W * .3, H * .2, W * .9); sh.addColorStop(0, "rgba(255,255,255,.12)"); sh.addColorStop(1, "rgba(255,255,255,0)");
-    x.fillStyle = sh; x.fillRect(0, 0, W, H);
-    x.strokeStyle = "rgba(255,210,63,.35)"; x.lineWidth = .5 * u; rr(x, 3.25 * u, 3.25 * u, W - 6.5 * u, H - 6.5 * u, 3 * u); x.stroke();
-    x.textBaseline = "top";
+  function rr(x, X, Y, W, H, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + W, Y, X + W, Y + H, r); x.arcTo(X + W, Y + H, X, Y + H, r); x.arcTo(X, Y + H, X, Y, r); x.arcTo(X, Y, X + W, Y, r); x.closePath(); }
+  const ls0 = (x) => { if ("letterSpacing" in x) x.letterSpacing = "0px"; };
+  // Contorno con esquinas cóncavas: arcos centrados en las esquinas del boleto.
+  function concave(x, W, H, d, R) {
+    const k = Math.sqrt(R * R - d * d), at = (cx, cy, px, py) => Math.atan2(py - cy, px - cx);
+    x.beginPath();
+    x.moveTo(k, d); x.lineTo(W - k, d);
+    x.arc(W, 0, R, at(W, 0, W - k, d), at(W, 0, W - d, k), true);
+    x.lineTo(W - d, H - k);
+    x.arc(W, H, R, at(W, H, W - d, H - k), at(W, H, W - k, H - d), true);
+    x.lineTo(k, H - d);
+    x.arc(0, H, R, at(0, H, k, H - d), at(0, H, d, H - k), true);
+    x.lineTo(d, k);
+    x.arc(0, 0, R, at(0, 0, d, k), at(0, 0, k, d), true);
+    x.closePath();
+  }
+  function shape(x, W, H, r) {
+    x.beginPath();
+    x.moveTo(r, 0); x.lineTo(W - r, 0); x.arc(W, 0, r, Math.PI, Math.PI / 2, true);
+    x.lineTo(W, H - r); x.arc(W, H, r, 3 * Math.PI / 2, Math.PI, true);
+    x.lineTo(r, H); x.arc(0, H, r, 0, -Math.PI / 2, true);
+    x.lineTo(0, r); x.arc(0, 0, r, Math.PI / 2, 0, true);
+    x.closePath();
+  }
+  let noise = null;
+  function grain() {
+    if (noise) return noise;
+    noise = document.createElement("canvas"); noise.width = noise.height = 160;
+    const g = noise.getContext("2d"), img = g.createImageData(160, 160);
+    for (let i = 0; i < img.data.length; i += 4) { img.data[i] = 24; img.data[i + 1] = 36; img.data[i + 2] = 59; img.data[i + 3] = Math.random() < .5 ? Math.random() * 120 : 0; }
+    g.putImageData(img, 0, 0);
+    return noise;
+  }
+  const measure = (x, t, font) => { x.font = font; ls0(x); return x.measureText(t).width; };
+  // Dibuja el texto ocupando `width`: si sobra lugar reparte espaciado entre letras; centrado en `cy`.
+  function spread(x, t, font, left, width, cy) {
+    x.font = font; ls0(x); x.textBaseline = "middle"; x.textAlign = "left";
+    const chars = [...t], ws = chars.map((ch) => x.measureText(ch).width), nat = x.measureText(t).width;
+    if (chars.length < 2 || nat >= width - .5) { x.fillText(t, left + Math.max(0, (width - nat) / 2), cy); return; }
+    const gap = (width - ws.reduce((a, b) => a + b, 0)) / (chars.length - 1);
+    let px = left; chars.forEach((ch, i) => { x.fillText(ch, px, cy); px += ws[i] + gap; });
+  }
+  const fitFs = (x, t, weight, fam, maxFs, width) => { const w = measure(x, t, `${weight} ${maxFs}px ${fam}`); return w > width ? maxFs * width / w : maxFs; };
+  function spaced(x, t, font, left, baseline, ls) {
+    x.font = font; ls0(x); x.textBaseline = "alphabetic"; x.textAlign = "left";
+    let px = left; for (const ch of t) { x.fillText(ch, px, baseline); px += x.measureText(ch).width + ls; }
+    return px - ls - left;
+  }
+  // Frente del boleto en un canvas transparente de ancho W (alto 1,4·W), con agujeros reales.
+  function ticketCanvas(c, W) {
+    const H = Math.round(W * 1.4), u = W / 100;
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    const x = cv.getContext("2d");
+    x.fillStyle = TERRA; shape(x, W, H, 6 * u); x.fill();
+    // grano de impresión
+    x.save(); x.globalCompositeOperation = "source-atop"; x.globalAlpha = .55;
+    x.fillStyle = x.createPattern(grain(), "repeat"); x.fillRect(0, 0, W, H); x.restore();
+    // filete
+    x.strokeStyle = INK; x.lineWidth = 1.1 * u; concave(x, W, H, 4.6 * u, 10.6 * u); x.stroke();
+    x.fillStyle = INK;
+    const L = 10 * u, R = 90 * u, CW = 80 * u, up = (t) => t.toUpperCase();
     const num = c.n ? pad(c.n) : "—";
-    const corner = () => {
-      x.font = `700 ${3.2 * u}px "JetBrains Mono"`; ls(x, "0px"); const wNo = x.measureText("Nº").width;
-      x.font = `400 ${8.5 * u}px "Bowlby One"`; const wNum = x.measureText(num).width;
-      const cx = 6 * u + Math.max(wNo, wNum) / 2;
-      x.fillStyle = SUN; x.textAlign = "center";
-      x.font = `700 ${3.2 * u}px "JetBrains Mono"`; x.fillText("Nº", cx, 5 * u);
-      x.font = `400 ${8.5 * u}px "Bowlby One"`; x.fillText(num, cx, 9 * u);
-    };
-    corner(); x.save(); x.translate(W, H); x.rotate(Math.PI); corner(); x.restore();
-    // banda
-    x.save(); x.translate(85 * u, 15 * u); x.rotate(Math.PI / 4);
-    x.save(); x.shadowColor = "rgba(8,12,60,.3)"; x.shadowBlur = 1.4 * u; x.shadowOffsetY = .6 * u;
-    x.fillStyle = PINK; x.fillRect(-22 * u, -3 * u, 44 * u, 6 * u); x.restore();
-    x.fillStyle = "#0E1450"; x.font = `700 ${2.6 * u}px "JetBrains Mono"`; ls(x, `${.14 * 2.6 * u}px`);
-    x.textAlign = "center"; x.textBaseline = "middle"; x.fillText("TRANSFERIBLE", .18 * u, .15 * u);
-    x.restore(); x.textBaseline = "top"; ls(x, "0px");
-    // emblema
-    x.save(); x.translate(34 * u, 20 * u); const s = 32 * u / 100; x.scale(s, s);
-    x.strokeStyle = SUN; x.lineWidth = 3; x.beginPath(); x.arc(50, 50, 46, 0, Math.PI * 2); x.stroke();
-    x.lineWidth = 1.6; x.lineCap = "round";
-    for (let i = 0; i < 12; i++) { const a = i * Math.PI / 6, r1 = 40.5, r2 = i % 3 === 0 ? 35.5 : 37.5; x.beginPath(); x.moveTo(50 + r1 * Math.sin(a), 50 - r1 * Math.cos(a)); x.lineTo(50 + r2 * Math.sin(a), 50 - r2 * Math.cos(a)); x.stroke(); }
-    const tri = (p, col) => { x.fillStyle = col; x.beginPath(); x.moveTo(p[0], p[1]); x.lineTo(p[2], p[3]); x.lineTo(p[4], p[5]); x.closePath(); x.fill(); };
-    tri([30, 22, 70, 22, 50, 50], PINK); tri([50, 50, 30, 78, 70, 78], PINK); tri([42, 44, 58, 44, 50, 50], SUN);
-    x.beginPath(); x.moveTo(50, 50); x.lineTo(50, 67); x.stroke(); tri([38, 78, 62, 78, 50, 66], SUN);
-    x.fillStyle = SUN; rr(x, 26, 18.5, 48, 3.5, 1.5); x.fill(); rr(x, 26, 78, 48, 3.5, 1.5); x.fill();
-    x.restore();
-    // textos
-    x.textAlign = "center"; x.fillStyle = SUN; x.font = `400 ${14.5 * u}px "Bowlby One"`; ls(x, `${.01 * 14.5 * u}px`); x.fillText("COMODÍN", W / 2, 58 * u); ls(x, "0px");
-    x.fillStyle = WHITE; x.font = `italic 500 ${5.6 * u}px "Instrument Sans"`; x.fillText(`Vale por 1 día de ${C.corto}`, W / 2, 76 * u);
-    x.fillStyle = SUN; x.font = `500 ${2.7 * u}px "JetBrains Mono"`; ls(x, `${.08 * 2.7 * u}px`);
-    const uses = wrap(x, "REUNIÓN DE TRABAJO · CAFÉ · CHARLA DE BAR · LAVAR EL AUTO", 80 * u);
-    uses.forEach((l, i) => x.fillText(l, W / 2, 89.6 * u + i * 2.7 * 1.6 * u));
-    ls(x, "0px");
-    x.fillStyle = WHITE; x.font = `italic 500 ${3.8 * u}px "Instrument Sans"`;
-    x.fillText("Vos elegís.", W / 2, 89.6 * u + uses.length * 2.7 * 1.6 * u + 1.6 * u);
-    // troquel
-    x.strokeStyle = "rgba(255,210,63,.6)"; x.lineWidth = .45 * u; x.setLineDash([1.4 * u, 1.2 * u]);
-    x.beginPath(); x.moveTo(7 * u, 108 * u); x.lineTo(93 * u, 108 * u); x.stroke(); x.setLineDash([]);
-    x.fillStyle = notchColor; [0, W].forEach((px) => { x.beginPath(); x.arc(px, 108 * u, 3.2 * u, 0, Math.PI * 2); x.fill(); });
+    // medidas de cada fila (mismo criterio que la tarjeta en pantalla)
+    const fNum = `600 ${10 * u}px ${MONO}`, numW = measure(x, num, fNum);
+    const tx0 = L + numW + 9 * u, tW = R - tx0;
+    const fsT = fitFs(x, "TRANSFERIBLE", 800, DISP, 9 * u, tW);
+    const h1 = Math.max(8 * u, .9 * fsT);
+    const valeW = CW - 24 * u, fsV = fitFs(x, "VALE", 900, DISP, 32 * u, valeW), hv = Math.max(9 * u, .8 * fsV + u);
+    const canje = up(`Canjeable por 1 día con ${C.corto}`), fsC = fitFs(x, canje, 800, DISP, 7 * u, CW), hc = .9 * fsC;
+    const ex = EXAMPLES.map(up), fsE = Math.min(...ex.map((t) => fitFs(x, t, 500, DISP, 7.5 * u, CW))), he = 3 * .92 * fsE + 4.8 * u;
+    const gap = (91 * u - (h1 + u + hv + hc + u + he)) / 5;
+    let y = 10.5 * u;
+    // fila 1: número | transferible
+    x.textBaseline = "middle"; x.font = fNum; ls0(x); x.fillText(num, L, y + h1 / 2);
+    x.fillRect(L + numW + 4 * u, y, u, h1);
+    spread(x, "TRANSFERIBLE", `800 ${fsT}px ${DISP}`, tx0, tW, y + h1 / 2);
+    y += h1 + gap; x.fillRect(L, y, CW, u); y += u + gap;
+    // VALE entre estrellas
+    const star = new Path2D(STAR);
+    [[L, y + hv / 2], [R - 9 * u, y + hv / 2]].forEach(([sx, sy]) => { x.save(); x.translate(sx, sy - 4.5 * u); x.scale(.09 * u, .09 * u); x.fill(star); x.restore(); });
+    spread(x, "VALE", `900 ${fsV}px ${DISP}`, L + 12 * u, valeW, y + u + .4 * fsV);
+    y += hv + gap;
+    spread(x, canje, `800 ${fsC}px ${DISP}`, L, CW, y + .45 * fsC);
+    y += hc + gap; x.fillRect(L, y, CW, u); y += u + gap;
+    ex.forEach((t) => { spread(x, t, `500 ${fsE}px ${DISP}`, L, CW, y + .46 * fsE); y += .92 * fsE + 2.4 * u; });
     // talón
-    x.textAlign = "left"; x.fillStyle = "rgba(255,210,63,.8)"; x.font = `700 ${2.4 * u}px "JetBrains Mono"`; ls(x, `${.14 * 2.4 * u}px`);
-    x.fillText("PARA", 6.5 * u, 113 * u);
-    x.fillStyle = WHITE; let fs = 6; const who = c.nombre || "vos";
-    ls(x, "0px");
-    do { x.font = `600 ${fs * u}px "Instrument Sans"`; fs -= .25; } while (x.measureText(who).width > 64 * u && fs > 3.5);
-    x.fillText(who, 6.5 * u, 116.6 * u);
-    x.textBaseline = "alphabetic";
-    x.fillStyle = "rgba(255,210,63,.8)"; x.font = `700 ${2.4 * u}px "JetBrains Mono"`; ls(x, `${.14 * 2.4 * u}px`);
-    const lw = x.measureText("EMITIDO").width;
-    x.fillText("EMITIDO", 6.5 * u, 128 * u); ls(x, "0px");
-    x.fillStyle = WHITE; x.font = `500 ${3.2 * u}px "JetBrains Mono"`; x.fillText(fmtFecha(c.fecha), 6.5 * u + lw + 2 * u, 128 * u);
-    x.textBaseline = "top";
-    x.restore();
+    const y0 = 112 * u, y1 = H - 10.5 * u;
+    const fBig = `600 ${12 * u}px ${MONO}`, bigW = measure(x, num, fBig), bx = R - bigW - 5 * u;
+    x.fillRect(bx, y0, u, y1 - y0);
+    x.font = fBig; x.textBaseline = "middle"; x.fillText(num, bx + 5 * u, (y0 + y1) / 2);
+    const dataW = bx - 4 * u - L, fLbl = `600 ${3.1 * u}px ${MONO}`;
+    spaced(x, "PARA", fLbl, L, y0 + 2.3 * u, .14 * 3.1 * u);
+    const who = up(c.nombre || "vos"), fsN = fitFs(x, who, 900, DISP, 9 * u, dataW);
+    const gapD = (y1 - y0 - 3.1 * u - .9 * fsN - 3.9 * u) / 2;
+    x.font = `900 ${fsN}px ${DISP}`; ls0(x); x.textBaseline = "middle"; x.fillText(who, L, y0 + 3.1 * u + gapD + .45 * fsN);
+    const lw = spaced(x, "EMITIDO", fLbl, L, y1 - .7 * u, .14 * 3.1 * u);
+    x.font = `600 ${3.9 * u}px ${MONO}`; ls0(x); x.textBaseline = "alphabetic"; x.fillText(fmtFecha(c.fecha), L + lw + 2 * u, y1 - .7 * u);
+    // perforación, muescas y dientes: agujeros de verdad
+    x.globalCompositeOperation = "destination-out";
+    const hole = (cx, cy, r) => { x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill(); };
+    for (let k = -13; k <= 13; k++) hole(50 * u + k * 3.4 * u, 108 * u, .85 * u);
+    hole(0, 108 * u, 3.6 * u); hole(W, 108 * u, 3.6 * u);
+    for (let px = W / 2 - Math.ceil(W / 2 / (3 * u)) * 3 * u; px <= W; px += 3 * u) { hole(px, 0, 1.15 * u); hole(px, H, 1.15 * u); }
+    x.globalCompositeOperation = "source-over";
+    return cv;
   }
   async function makePNG(c) {
     await fontsReady();
-    const CW = 1080, CH = 1350, W = 840, ox = 120, oy = 62, BG = "#E7E9F2";
+    const CW = 1080, CH = 1350, W = 840, ox = 120, oy = 52, BG = "#0B1222";
     const cv = document.createElement("canvas"); cv.width = CW; cv.height = CH;
     const x = cv.getContext("2d");
     x.fillStyle = BG; x.fillRect(0, 0, CW, CH);
-    x.save(); x.shadowColor = "rgba(14,20,80,.32)"; x.shadowBlur = 70; x.shadowOffsetY = 26; rr(x, ox, oy, W, W * 1.4, 5 * W / 100); x.fillStyle = "#2338C9"; x.fill(); x.restore();
-    x.save(); x.translate(ox, oy); drawFront(x, c, W, BG); x.restore();
-    x.textAlign = "center"; x.textBaseline = "alphabetic"; x.fillStyle = "#585E7E"; x.font = '700 22px "JetBrains Mono"'; ls(x, "4px");
-    x.fillText("ABRÍ EL LINK Y DALO VUELTA ↻", CW / 2, CH - 52);
+    const tk = ticketCanvas(c, W);
+    x.save(); x.shadowColor = "rgba(3,6,16,.65)"; x.shadowBlur = 44; x.shadowOffsetY = 22; x.drawImage(tk, ox, oy); x.restore();
+    x.fillStyle = "#A7B1C4"; x.textAlign = "left";
+    const t = "ABRILO Y DALO VUELTA ↻", f = `600 24px ${MONO}`, w = measure(x, t, f) + (t.length - 1) * 4;
+    spaced(x, t, f, (CW - w) / 2, CH - 46, 4);
     return new Promise((res) => cv.toBlob(res, "image/png"));
   }
 
   const use = async (n) => { try { return window.claude && window.claude.use ? await window.claude.use(n) : null; } catch (_) { return null; } };
 
-  window.Comodin = { C, use, $, $$, pad, today, fmtFecha, firstName, esc, parse, linkOf, passLinkOf, normPhone, prettyPhone, waLink, mount, render, deal, flip, showFront, toast, copyText, selectText, makePNG, drawFront, fontsReady, rr, get current() { return current; } };
+  window.Comodin = { C, use, $, $$, pad, today, fmtFecha, firstName, esc, parse, linkOf, passLinkOf, normPhone, prettyPhone, waLink, mount, render, fit, deal, flip, showFront, toast, copyText, selectText, makePNG, ticketCanvas, fontsReady, rr, get current() { return current; } };
 })();

@@ -7,19 +7,19 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Comodín">
 <title>Emisor de Comodines</title>
-<meta name="theme-color" content="#E7E9F2">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Crect width='100' height='140' rx='12' fill='%23FFD23F'/%3E%3Cpath d='M30 40h40L50 70zM50 70L30 100h40z' fill='%232338C9'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B1222">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Crect width='100' height='140' rx='12' fill='%23E8D8BC'/%3E%3Cpath d='M30 40h40L50 70zM50 70L30 100h40z' fill='%2318243B'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <link rel="stylesheet" href="assets/comodin.css">
 <style>
   /* Emisor: app de una sola columna con barra de pestañas abajo, pensada para el pulgar. */
   body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
   main.app { max-width: 560px; padding-block: 12px 24px; }
   .appbar { display: flex; align-items: center; gap: 8px; min-height: 52px; margin-bottom: 8px; }
-  .appbar h1 { margin: 0; font-size: 26px; line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
-  .appbar h1 .mono { font-weight: 700; }
+  .appbar h1 { margin: 0; font-family: var(--f-display); font-weight: 900; font-size: 34px; line-height: 1; letter-spacing: .01em; text-transform: uppercase; }
+  .appbar h1 .mono { font-weight: 600; font-size: 30px; text-transform: none; }
   .backlink { display: inline-flex; align-items: center; gap: 4px; font: 600 15px var(--f-body); color: var(--accent); background: none; border: 0; padding: 8px 8px 8px 0; cursor: pointer; }
   .screen { display: flex; flex-direction: column; gap: 14px; }
   .muted { color: var(--muted); }
@@ -30,13 +30,13 @@
     padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px));
     background: var(--surface); border-top: 1px solid var(--line);
   }
-  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 4px; min-height: 52px; border: 0; background: none; border-radius: 12px; color: var(--muted); font: 600 12px var(--f-body); cursor: pointer; position: relative; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 4px; min-height: 52px; border: 0; background: none; border-radius: 6px; color: var(--muted); font: 600 12px var(--f-body); cursor: pointer; position: relative; }
   .tab svg { width: 24px; height: 24px; }
   .tab[aria-current="page"] { color: var(--accent); }
   .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-  .badge { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--accent); color: var(--accent-fg); font: 700 11px/18px var(--f-mono); text-align: center; }
+  .badge { position: absolute; top: 2px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 4px; background: var(--accent); color: var(--accent-fg); font: 700 11px/18px var(--f-mono); text-align: center; }
 
-  .banner { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 12px; background: var(--surface); border: 1px solid var(--ok); color: var(--fg); font-weight: 600; }
+  .banner { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--ok); color: var(--fg); font-weight: 600; }
   .banner::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--ok); flex: none; }
 
   .facts { margin: 0; display: flex; flex-direction: column; }
