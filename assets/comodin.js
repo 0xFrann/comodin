@@ -49,18 +49,11 @@
   }
   const waLink = (phone, text) => "https://wa.me/" + (phone || "") + "?text=" + encodeURIComponent(text);
 
-  /* ---------- texturas: papel reciclado y tinta gastada ---------- */
-  const TEX = {
-      "dark": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.01'%20numOctaves='4'%20seed='3'%20stitchTiles='stitch'%20result='m'/%3E%3CfeColorMatrix%20in='m'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20-0.9%200%200%200%200.6'%20result='mo'/%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.2'%20numOctaves='3'%20seed='8'%20stitchTiles='stitch'%20result='h'/%3E%3CfeColorMatrix%20in='h'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201%200%200%200%200'%20result='hba'/%3E%3CfeComponentTransfer%20in='hba'%20result='hb'%3E%3CfeFuncA%20type='table'%20tableValues='0%200%200%200%200%200%200%200%200%200%20.7%200%200%200%200%200%200%200%200%200%200'/%3E%3C/feComponentTransfer%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.035'%20numOctaves='2'%20seed='51'%20stitchTiles='stitch'%20result='hfz'/%3E%3CfeColorMatrix%20in='hfz'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%209%200%200%200%20-5.1'%20result='hfm'/%3E%3CfeComposite%20in='hb'%20in2='hfm'%20operator='in'%20result='hf'/%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.75'%20numOctaves='1'%20seed='13'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20-16%200%200%200%203.9'%20result='sf'/%3E%3CfeMerge%3E%3CfeMergeNode%20in='mo'/%3E%3CfeMergeNode%20in='hf'/%3E%3CfeMergeNode%20in='sf'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E",
-      "light": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.22'%20numOctaves='3'%20seed='21'%20stitchTiles='stitch'%20result='h'/%3E%3CfeColorMatrix%20in='h'%20type='matrix'%20values='0%200%200%200%201%200%200%200%200%201%200%200%200%200%201%201%200%200%200%200'%20result='hba'/%3E%3CfeComponentTransfer%20in='hba'%20result='hb'%3E%3CfeFuncA%20type='table'%20tableValues='0%200%200%200%200%200%200%200%200%200%20.7%200%200%200%200%200%200%200%200%200%200'/%3E%3C/feComponentTransfer%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.035'%20numOctaves='2'%20seed='61'%20stitchTiles='stitch'%20result='hfz'/%3E%3CfeColorMatrix%20in='hfz'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%209%200%200%200%20-5.1'%20result='hfm'/%3E%3CfeComposite%20in='hb'%20in2='hfm'%20operator='in'%20result='hf'/%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.85'%20numOctaves='1'%20seed='31'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%201%200%200%200%200%201%200%200%200%200%201%20-16%200%200%200%203.9'%20result='sf'/%3E%3CfeMerge%3E%3CfeMergeNode%20in='hf'/%3E%3CfeMergeNode%20in='sf'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E",
-      "wear": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.9'%20numOctaves='2'%20seed='41'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%2020%200%200%200%20-5.6'%20result='a'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E",
-      "holes": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.9'%20numOctaves='2'%20seed='41'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20-20%200%200%200%206.6'%20result='a'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E"
-  };
-  Object.entries({ "--tex-dark": TEX.dark, "--tex-light": TEX.light, "--wear": TEX.wear })
-    .forEach(([k, v]) => document.documentElement.style.setProperty(k, `url("${v}")`));
+  /* ---------- texturas del papel ---------- */
+  const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all(Object.entries(TEX).map(([k, src]) => new Promise((res) => {
-    const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = src;
+  const texturesReady = Promise.all([["base", "papel.jpg"], ["luz", "papel-luz.jpg"]].map(([k, f]) => new Promise((res) => {
+    const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
   /* ---------- tarjeta ---------- */
@@ -82,7 +75,7 @@
   }
   const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
-  const perfHTML = `<i class="tex" aria-hidden="true"></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
+  const perfHTML = `<span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   const cardHTML = () => `
   <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
     <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
@@ -288,8 +281,9 @@
     // la tinta se dibuja en su propia capa para poder gastarla
     const ink = document.createElement("canvas"); ink.width = W; ink.height = H;
     const x = ink.getContext("2d");
-    const k = W / 340;                     // la textura conserva la escala de la tarjeta en pantalla
-    const pat = (img, size) => { const p = pc.createPattern(img, "repeat"); p.setTransform(new DOMMatrix().scale(k * size / 400)); return p; };
+    const cover = (img) => { const r = Math.max(W / img.width, H / img.height), w = img.width * r, h = img.height * r; return [(W - w) / 2, (H - h) / 2, w, h]; };
+    const paperLayer = (img, mode, alpha) => { if (!img) return; pc.save(); shape(pc, W, H, 6 * u); pc.clip(); pc.globalCompositeOperation = mode; pc.globalAlpha = alpha; pc.drawImage(img, ...cover(img)); pc.restore(); };
+    paperLayer(texImg.base, "soft-light", .9);
     // filete
     x.strokeStyle = INK; x.lineWidth = 1.1 * u; concave(x, W, H, 4.6 * u, 10.6 * u); x.stroke();
     x.fillStyle = INK;
@@ -330,14 +324,8 @@
     x.font = `900 ${fsN}px ${DISP}`; ls0(x); x.textBaseline = "middle"; x.fillText(who, L, y0 + 3.1 * u + gapD + .45 * fsN);
     const lw = spaced(x, "EMITIDO", fLbl, L, y1 - .7 * u, .14 * 3.1 * u);
     x.font = `600 ${3.9 * u}px ${MONO}`; ls0(x); x.textBaseline = "alphabetic"; x.fillText(fmtFecha(c.fecha), L + lw + 2 * u, y1 - .7 * u);
-    // tinta gastada: puntitos donde la tinta no tomó
-    if (texImg.holes) { x.globalCompositeOperation = "destination-out"; x.fillStyle = pat(texImg.holes, 260); x.fillRect(0, 0, W, H); x.globalCompositeOperation = "source-over"; }
-    pc.drawImage(ink, 0, 0);
-    // papel reciclado: manchas y fibras oscuras (multiplicar) y fibras claras (trama)
-    pc.save(); shape(pc, W, H, 6 * u); pc.clip();
-    if (texImg.dark) { pc.globalCompositeOperation = "multiply"; pc.globalAlpha = .5; pc.fillStyle = pat(texImg.dark, 400); pc.fillRect(0, 0, W, H); }
-    if (texImg.light) { pc.globalCompositeOperation = "screen"; pc.globalAlpha = .4; pc.fillStyle = pat(texImg.light, 400); pc.fillRect(0, 0, W, H); }
-    pc.restore();
+    pc.save(); pc.globalCompositeOperation = "multiply"; pc.globalAlpha = .92; pc.drawImage(ink, 0, 0); pc.restore();
+    paperLayer(texImg.luz, "screen", .55);
     // perforación, muescas y dientes: agujeros de verdad
     const xx = x; { const x = pc;
     x.globalCompositeOperation = "destination-out";
