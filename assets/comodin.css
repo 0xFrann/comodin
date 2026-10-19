@@ -47,6 +47,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 
 /* ---------- el boleto ---------- */
 .stage { perspective: 1400px; width: 100%; display: flex; justify-content: center; padding-block: 6px 4px; }
+.tilt { transform-style: preserve-3d; transition: transform .35s cubic-bezier(.2,.8,.3,1); max-width: 100%; }
 .card {
   position: relative;
   width: min(80vw, 340px);
@@ -228,6 +229,6 @@ input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 
 .sheet-inner p { margin: 0; font-size: 14px; color: var(--muted); text-align: center; }
 
 @media (prefers-reduced-motion: reduce) {
-  .card { transition: none !important; }
+  .card, .tilt { transition: none !important; }
   .toast { transition: none; }
 }

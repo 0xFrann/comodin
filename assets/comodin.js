@@ -154,25 +154,33 @@
   }
 
   /* ---------- interacción 3D ---------- */
+  // Dos capas: .tilt inclina la tarjeta al pasar el mouse (solo desktop) y .card gira al tocar o arrastrar.
+  // Así la inclinación nunca interrumpe la animación del giro.
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let card, base = 0, ry = 0, rx = 0, drag = null;
+  let card, tilt, base = 0, ry = 0, rx = 0, drag = null;
   function apply(mode) {
     card.style.transition = reduced ? "none"
       : mode === "snap" ? "transform .75s cubic-bezier(.2,.85,.25,1)"
-      : mode === "hover" ? "transform .18s ease-out"
       : mode === "deal" ? "transform 1.3s cubic-bezier(.2,.8,.2,1)" : "none";
     card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
   }
+  function lean(px, py) { if (!reduced) tilt.style.transform = `rotateX(${-py * 10}deg) rotateY(${px * 14}deg)`; }
+  function unlean() { tilt.style.transform = "rotateX(0deg) rotateY(0deg)"; }
   function flip() { base += 180; ry = base; rx = 0; apply("snap"); }
   function showFront() { base = Math.round(base / 360) * 360; ry = base; rx = 0; apply("snap"); }
   function mount(stage) {
-    stage.innerHTML = cardHTML();
+    stage.innerHTML = `<div class="tilt">${cardHTML()}</div>`;
+    tilt = $(".tilt", stage);
     card = $("#card", stage);
     try { new ResizeObserver(() => fit(card)).observe(card); } catch (_) {}
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fit(card));
+    card.addEventListener("dragstart", (e) => e.preventDefault());
     card.addEventListener("pointerdown", (e) => {
+      if (e.button > 0) return;
+      e.preventDefault();
       drag = { x: e.clientX, y: e.clientY, ry0: ry, rx0: rx, base0: base, moved: false, lx: e.clientX, lt: performance.now(), vx: 0 };
       try { card.setPointerCapture(e.pointerId); } catch (_) {}
+      unlean();
     });
     card.addEventListener("pointermove", (e) => {
       if (drag) {
@@ -185,10 +193,8 @@
         rx = Math.max(-32, Math.min(32, drag.rx0 - dy * 0.35));
         apply("none");
       } else if (e.pointerType === "mouse") {
-        const r = card.getBoundingClientRect();
-        ry = base + ((e.clientX - r.left) / r.width - .5) * 16;
-        rx = -((e.clientY - r.top) / r.height - .5) * 12;
-        apply("hover");
+        const r = tilt.getBoundingClientRect();
+        lean((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5);
       }
     });
     const end = () => {
@@ -204,7 +210,8 @@
     };
     card.addEventListener("pointerup", end);
     card.addEventListener("pointercancel", end);
-    card.addEventListener("pointerleave", (e) => { if (!drag && e.pointerType === "mouse") { ry = base; rx = 0; apply("snap"); } });
+    card.addEventListener("lostpointercapture", end);
+    card.addEventListener("pointerleave", (e) => { if (!drag && e.pointerType === "mouse") unlean(); });
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
     return card;
   }
