@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Comodín de Franco</title>
+<meta name="description" content="Vale por 1 día de Franco. Abrilo y dalo vuelta.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tenés un comodín">
+<meta property="og:description" content="Vale por 1 día de Franco. Abrilo y dalo vuelta.">
+<meta property="og:image" content="https://0xfrann.github.io/comodin/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#E7E9F2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Crect width='100' height='140' rx='12' fill='%232338C9'/%3E%3Cpath d='M30 40h40L50 70zM50 70L30 100h40z' fill='%23FF6FA8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/comodin.css">
+</head>
+<body>
+<main>
+  <header class="top">
+    <div class="brand"><b>Comodín</b> · de Franco</div>
+  </header>
+
+  <section class="stage-col">
+    <p class="lede" id="lede">Gracias por tu tiempo.<br><em>Te devuelvo un poco del mío.</em></p>
+    <div class="stage" id="stage"></div>
+    <div class="hint">
+      <span>Arrastralo para moverlo · tocalo para darlo vuelta</span>
+      <button class="chip-btn" id="flipBtn" type="button">Dar vuelta</button>
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" id="btnCanjear" target="_blank" rel="noopener">Canjear este comodín <small>por WhatsApp</small></a>
+      <a class="btn" id="btnPasar" target="_blank" rel="noopener">Pasárselo a alguien</a>
+      <div class="row2">
+        <a class="btn" id="btnLinkedin" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" id="btnCv" target="_blank" rel="noopener">Mi CV</a>
+      </div>
+      <div class="contact">
+        <span>WhatsApp</span><span class="mono" id="phoneText"></span>
+        <button class="chip-btn" id="copyPhone" type="button">Copiar</button>
+      </div>
+      <p class="fine">Si conocés a alguien a quien le sirva más que a vos, pasáselo. Para eso está.</p>
+    </div>
+  </section>
+</main>
+
+<script src="assets/config.js"></script>
+<script src="assets/comodin.js"></script>
+<script>
+(function () {
+  const { C, $, pad, firstName, esc } = Comodin;
+  Comodin.mount($("#stage"));
+  $("#flipBtn").addEventListener("click", Comodin.flip);
+
+  const phonePretty = "+" + C.whatsapp;
+  $("#phoneText").textContent = phonePretty;
+  $("#copyPhone").addEventListener("click", () => Comodin.copyText(phonePretty, $("#phoneText"), "Número copiado"));
+  $("#btnLinkedin").href = C.linkedin;
+  $("#btnCv").href = C.cv;
+
+  function route() {
+    const c = Comodin.parse(location.hash) || { n: 0, nombre: "", fecha: "" };
+    Comodin.render(c);
+    const n = c.n ? " Nº " + pad(c.n) : "";
+    $("#lede").innerHTML = c.nombre
+      ? `Gracias por tu tiempo, ${esc(firstName(c.nombre))}.<br><em>Te devuelvo un poco del mío.</em>`
+      : `Gracias por tu tiempo.<br><em>Te devuelvo un poco del mío.</em>`;
+    $("#btnCanjear").href = Comodin.waLink(C.whatsapp, `¡Hola ${C.corto}! Tengo el comodín${n} y quiero canjearlo 🎟️`);
+    $("#btnPasar").href = Comodin.waLink("", c.n
+      ? `Te paso este comodín de ${C.corto}: vale por 1 día de su tiempo y creo que a vos te sirve más 🎟️\n${Comodin.passLinkOf(c)}`
+      : `Mirá esto: ${C.base}`);
+  }
+  addEventListener("hashchange", () => { route(); Comodin.showFront(); });
+  route();
+  Comodin.deal();
+})();
+</script>
+</body>
+</html>

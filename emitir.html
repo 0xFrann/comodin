@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Emisor de Comodines</title>
+<meta name="theme-color" content="#E7E9F2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Crect width='100' height='140' rx='12' fill='%23FFD23F'/%3E%3Cpath d='M30 40h40L50 70zM50 70L30 100h40z' fill='%232338C9'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="assets/comodin.css">
+<style>
+  .em { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); grid-template-areas: "setup" "form" "share" "card" "reg" "foot"; }
+  .a-setup { grid-area: setup; } .a-form { grid-area: form; } .a-share { grid-area: share; }
+  .a-card { grid-area: card; } .a-reg { grid-area: reg; } .a-foot { grid-area: foot; }
+  @media (min-width: 860px) {
+    .em { column-gap: 32px; grid-template-columns: minmax(0, 1fr) minmax(0, 440px);
+      grid-template-areas: "card setup" "card form" "card share" "card reg" "card foot"; align-items: start; }
+    .a-card { position: sticky; top: 16px; grid-row: 1 / span 5; }
+  }
+  .a-card .lede { font-size: 15px; font-weight: 600; color: var(--muted); }
+  .head-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .foot { display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: center; font-size: 13px; color: var(--muted); }
+  .edit-note { display: flex; flex-direction: column; gap: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div class="brand"><b>Comodín</b> · emisor</div>
+    <a class="linkish" href="./" target="_blank" rel="noopener">Ver tarjeta pública</a>
+  </header>
+
+  <div class="em">
+    <!-- 1. Conexión con el repo privado -->
+    <section class="block a-setup" id="setup" hidden>
+      <p class="eyebrow">Primera vez</p>
+      <h2>Conectá tu registro</h2>
+      <ol class="steps">
+        <li>Creá el repo privado <b id="repoName">0xfrann/comodin-registro</b>. Puede estar vacío.</li>
+        <li>Creá un <a class="linkish" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">token fine-grained</a> con acceso solo a ese repo y el permiso <b>Contents: Read and write</b>.</li>
+        <li>Pegalo acá. Queda guardado solo en este navegador.</li>
+      </ol>
+      <div class="field">
+        <label for="token">Token de GitHub</label>
+        <input type="password" id="token" autocomplete="off" placeholder="github_pat_…">
+      </div>
+      <button class="btn primary" id="connectBtn" type="button">Conectar</button>
+      <p class="note err" id="setupErr" hidden></p>
+    </section>
+
+    <!-- 2. Nueva emisión -->
+    <section class="block a-form" id="formBlock" hidden>
+      <p class="eyebrow">Nueva emisión</p>
+      <h2>Próximo: <span class="mono" id="nextNum">Nº —</span></h2>
+      <div class="field">
+        <label for="nombre">Nombre <span class="muted">(va en la tarjeta)</span></label>
+        <input type="text" id="nombre" maxlength="40" autocomplete="off" placeholder="Ej: Martina Gómez">
+      </div>
+      <div class="field">
+        <label for="telefono">WhatsApp <span class="muted">(opcional)</span></label>
+        <input type="tel" id="telefono" inputmode="tel" autocomplete="off" placeholder="351 555 1234">
+      </div>
+      <div class="field">
+        <label for="nota">Nota <span class="muted">(solo para vos)</span></label>
+        <textarea id="nota" maxlength="600" placeholder="Dónde se conocieron, de qué hablaron, qué podría necesitar…"></textarea>
+      </div>
+      <button class="btn primary" id="emitBtn" type="button">Emitir comodín</button>
+      <p class="note err" id="formErr" hidden></p>
+    </section>
+
+    <!-- 3. Compartir -->
+    <section class="block a-share" id="shareBlock" hidden>
+      <p class="eyebrow" id="shareEyebrow"></p>
+      <h2>Listo. Mandáselo.</h2>
+      <a class="btn primary" id="sendWa" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+      <button class="btn" id="shareImg" type="button" hidden>Compartir la imagen</button>
+      <div class="row2">
+        <button class="btn" id="copyImg" type="button">Copiar imagen</button>
+        <button class="btn" id="dlImg" type="button">Descargar imagen</button>
+      </div>
+      <div class="linkbox"><code id="shareLink"></code><button class="chip-btn" id="copyLink" type="button">Copiar</button></div>
+      <button class="linkish" id="copyMsg" type="button">Copiar el mensaje completo</button>
+      <button class="btn" id="againBtn" type="button">Emitir otro</button>
+    </section>
+
+    <!-- vista previa -->
+    <section class="stage-col a-card">
+      <p class="lede" id="previewLabel">Vista previa</p>
+      <div class="stage" id="stage"></div>
+      <div class="hint"><button class="chip-btn" id="flipBtn" type="button">Dar vuelta</button></div>
+    </section>
+
+    <!-- 4. Registro -->
+    <section class="block a-reg" id="regBlock" hidden>
+      <div class="head-row">
+        <p class="eyebrow">Tus comodines <span id="count"></span></p>
+        <button class="linkish" id="reloadBtn" type="button">Actualizar</button>
+      </div>
+      <input type="search" id="search" placeholder="Buscar por nombre, teléfono o nota" aria-label="Buscar">
+      <ul class="registry" id="registry"></ul>
+      <p class="empty" id="regEmpty" hidden>Todavía no emitiste ninguno. El primero va a ser el Nº 001.</p>
+    </section>
+
+    <footer class="foot a-foot" id="foot" hidden>
+      <span>Guardando en <span class="mono" id="repoLabel"></span></span>
+      <button class="linkish" id="logoutBtn" type="button">Desconectar este navegador</button>
+    </footer>
+  </div>
+</main>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-inner">
+    <img id="sheetImg" alt="Imagen del comodín para compartir">
+    <p>Mantené presionada la imagen para copiarla o guardarla.</p>
+    <button class="btn primary" id="sheetClose" type="button">Listo</button>
+  </div>
+</div>
+
+<script src="assets/config.js"></script>
+<script src="assets/comodin.js"></script>
+<script>
+(function () {
+  const { C, $, pad, today, fmtFecha, firstName, esc, toast } = Comodin;
+  const R = C.registro;
+  const REPO = `${R.owner}/${R.repo}`;
+  const API = `https://api.github.com/repos/${REPO}`;
+  const TOKEN_KEY = "comodin.token";
+  const store = { get() { try { return localStorage.getItem(TOKEN_KEY) || ""; } catch (_) { return ""; } },
+                  set(v) { try { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); } catch (_) {} } };
+
+  let token = store.get();
+  let data = { emisiones: [] }, sha = null, current = null, imgP = null;
+  const open = new Set(), editing = new Set();
+
+  Comodin.mount($("#stage"));
+  $("#flipBtn").addEventListener("click", Comodin.flip);
+  $("#repoName").textContent = REPO;
+  $("#repoLabel").textContent = REPO;
+
+  /* ---------- GitHub ---------- */
+  const b64e = (s) => { const b = new TextEncoder().encode(s); let out = ""; for (let i = 0; i < b.length; i += 0x8000) out += String.fromCharCode(...b.subarray(i, i + 0x8000)); return btoa(out); };
+  const b64d = (s) => new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\s/g, "")), (c) => c.charCodeAt(0)));
+  async function gh(path, opts = {}) {
+    let r;
+    try {
+      r = await fetch(API + path, { ...opts, cache: "no-store", headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", ...(opts.body ? { "Content-Type": "application/json" } : {}) } });
+    } catch (_) { throw { code: "net", msg: "Sin conexión con GitHub. Revisá internet y probá de nuevo." }; }
+    return r;
+  }
+  function errFor(r) {
+    if (r.status === 401) return { code: "auth", msg: "GitHub rechazó el token. Puede estar vencido o mal copiado." };
+    if (r.status === 403) return { code: "perm", msg: "El token no tiene permiso de escritura. Necesita Contents: Read and write." };
+    if (r.status === 404) return { code: "repo", msg: `No encuentro ${REPO}, o el token no tiene acceso a ese repo.` };
+    if (r.status === 409 || r.status === 422) return { code: "conflict", msg: "El registro cambió mientras guardabas. Probá de nuevo." };
+    return { code: "http", msg: `GitHub respondió ${r.status}. Probá de nuevo en un rato.` };
+  }
+  async function load() {
+    const r = await gh(`/contents/${R.path}?t=${Date.now()}`);
+    if (r.status === 404) {
+      const repo = await gh("");
+      if (!repo.ok) throw errFor(repo);
+      data = { emisiones: [] }; sha = null; return;
+    }
+    if (!r.ok) throw errFor(r);
+    const j = await r.json();
+    const parsed = JSON.parse(b64d(j.content || "") || "{}");
+    data = { emisiones: Array.isArray(parsed.emisiones) ? parsed.emisiones : [] };
+    sha = j.sha;
+  }
+  async function save(message) {
+    const body = { message, content: b64e(JSON.stringify(data, null, 2) + "\n") };
+    if (sha) body.sha = sha;
+    const r = await gh(`/contents/${R.path}`, { method: "PUT", body: JSON.stringify(body) });
+    if (!r.ok) throw errFor(r);
+    sha = (await r.json()).content.sha;
+  }
+  // Lee lo último, aplica el cambio y guarda; si alguien guardó en el medio, reintenta una vez.
+  async function mutate(fn, message) {
+    for (let i = 0; i < 2; i++) {
+      await load();
+      const out = fn(data);
+      try { await save(typeof message === "function" ? message(out) : message); return out; }
+      catch (e) { if (e.code !== "conflict" || i === 1) throw e; }
+    }
+  }
+
+  /* ---------- UI ---------- */
+  const nextN = () => data.emisiones.reduce((m, e) => Math.max(m, e.n || 0), 0) + 1;
+  const prettyPhone = (d) => d ? "+" + d : "";
+  const msgOf = (e) => `¡Hola${e.nombre ? " " + firstName(e.nombre) : ""}! Gracias por tu tiempo. Te dejo un comodín: vale por 1 día mío, para lo que quieras 🎟️\n${Comodin.linkOf(e)}`;
+
+  function showConnected(ok) {
+    $("#setup").hidden = ok;
+    $("#formBlock").hidden = !ok;
+    $("#regBlock").hidden = !ok;
+    $("#foot").hidden = !ok;
+  }
+  function previewDraft() {
+    if (!$("#shareBlock").hidden) return;
+    Comodin.render({ n: nextN(), nombre: $("#nombre").value.trim(), fecha: today() });
+    $("#previewLabel").textContent = "Vista previa";
+  }
+  function renderAll() {
+    $("#nextNum").textContent = "Nº " + pad(nextN());
+    $("#emitBtn").textContent = "Emitir Nº " + pad(nextN());
+    previewDraft();
+    renderRegistry();
+  }
+  function renderRegistry() {
+    const q = $("#search").value.trim().toLowerCase();
+    const list = [...data.emisiones].sort((a, b) => b.n - a.n)
+      .filter((e) => !q || [e.nombre, e.telefono, e.nota].some((v) => (v || "").toLowerCase().includes(q)));
+    const canj = data.emisiones.filter((e) => e.canjeado).length;
+    $("#count").textContent = data.emisiones.length ? `· ${data.emisiones.length} emitidos · ${canj} canjeados` : "";
+    $("#regEmpty").hidden = data.emisiones.length > 0;
+    const ul = $("#registry"); ul.innerHTML = "";
+    list.forEach((e) => {
+      const li = document.createElement("li");
+      const isOpen = open.has(e.n);
+      li.innerHTML = `
+        <button class="reg-head" type="button" aria-expanded="${isOpen}">
+          <span class="reg-num">${pad(e.n)}</span>
+          <span class="reg-who">${esc(e.nombre || "Sin nombre")}</span>
+          <span class="reg-state${e.canjeado ? " on" : ""}">${e.canjeado ? "Canjeado" : "Pendiente"}</span>
+          <span class="reg-meta">${fmtFecha(e.fecha)}${e.telefono ? " · " + esc(prettyPhone(e.telefono)) : ""}</span>
+        </button>
+        <div class="reg-body" ${isOpen ? "" : "hidden"}>
+          ${editing.has(e.n)
+            ? `<div class="edit-note"><textarea id="note-${e.n}" maxlength="600" aria-label="Nota">${esc(e.nota || "")}</textarea>
+               <div class="reg-actions"><button class="chip-btn" data-act="saveNote" type="button">Guardar nota</button><button class="chip-btn" data-act="cancelNote" type="button">Cancelar</button></div></div>`
+            : `<div class="reg-note">${e.nota ? esc(e.nota) : '<span class="empty">Sin nota.</span>'}</div>`}
+          <div class="reg-actions">
+            <button class="chip-btn" data-act="share" type="button">Ver y compartir</button>
+            ${e.telefono ? `<a class="chip-btn" href="${Comodin.waLink(e.telefono, `¡Hola ${firstName(e.nombre)}!`)}" target="_blank" rel="noopener">Escribirle</a>` : ""}
+            <button class="chip-btn" data-act="toggle" type="button">${e.canjeado ? "Marcar pendiente" : "Marcar canjeado"}</button>
+            ${editing.has(e.n) ? "" : `<button class="chip-btn" data-act="editNote" type="button">Editar nota</button>`}
+          </div>
+        </div>`;
+      li.querySelector(".reg-head").addEventListener("click", () => { open.has(e.n) ? open.delete(e.n) : open.add(e.n); renderRegistry(); });
+      li.querySelectorAll("[data-act]").forEach((b) => b.addEventListener("click", () => act(b.dataset.act, e, b)));
+      ul.append(li);
+    });
+  }
+  async function act(kind, e, btn) {
+    if (kind === "share") return showShare(e);
+    if (kind === "editNote") { editing.add(e.n); return renderRegistry(); }
+    if (kind === "cancelNote") { editing.delete(e.n); return renderRegistry(); }
+    btn.disabled = true;
+    try {
+      if (kind === "toggle") {
+        const v = !e.canjeado;
+        await mutate((d) => { const t = d.emisiones.find((x) => x.n === e.n); if (t) { t.canjeado = v; t.canjeadoEl = v ? today() : null; } }, `Nº ${pad(e.n)} ${v ? "canjeado" : "pendiente"}`);
+        toast(v ? `Nº ${pad(e.n)} marcado como canjeado` : `Nº ${pad(e.n)} vuelve a pendiente`);
+      } else if (kind === "saveNote") {
+        const nota = $(`#note-${e.n}`).value.trim();
+        await mutate((d) => { const t = d.emisiones.find((x) => x.n === e.n); if (t) t.nota = nota; }, `Nota del Nº ${pad(e.n)}`);
+        editing.delete(e.n); toast("Nota guardada");
+      }
+    } catch (err) { toast(err.msg || "No se pudo guardar."); }
+    renderAll();
+  }
+
+  function showShare(e) {
+    current = e;
+    Comodin.render(e); Comodin.showFront();
+    $("#previewLabel").textContent = `Nº ${pad(e.n)}${e.nombre ? " · " + e.nombre : ""}`;
+    $("#shareEyebrow").textContent = `Nº ${pad(e.n)}${e.nombre ? " para " + e.nombre : ""}`;
+    const msg = msgOf(e);
+    $("#sendWa").href = Comodin.waLink(e.telefono || "", msg);
+    $("#sendWa").textContent = e.telefono && e.nombre ? `Enviar a ${firstName(e.nombre)} por WhatsApp` : "Enviar por WhatsApp";
+    $("#shareLink").textContent = Comodin.linkOf(e);
+    $("#shareBlock").hidden = false;
+    imgP = Comodin.makePNG(e);
+    $("#shareBlock").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
+  const fileName = () => `comodin-${pad(current.n)}.png`;
+  try {
+    const probe = new File([new Blob(["x"], { type: "image/png" })], "c.png", { type: "image/png" });
+    $("#shareImg").hidden = !(navigator.canShare && navigator.canShare({ files: [probe] }));
+  } catch (_) {}
+  $("#shareImg").addEventListener("click", async () => {
+    try {
+      const file = new File([await imgP], fileName(), { type: "image/png" });
+      await navigator.share({ files: [file], text: msgOf(current) });
+    } catch (e) { if (e && e.name !== "AbortError") toast("No se pudo abrir el menú para compartir."); }
+  });
+  async function download() {
+    const url = URL.createObjectURL(await imgP);
+    const a = document.createElement("a"); a.href = url; a.download = fileName(); document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+  $("#dlImg").addEventListener("click", download);
+  $("#copyImg").addEventListener("click", () => {
+    try {
+      navigator.clipboard.write([new ClipboardItem({ "image/png": imgP })])
+        .then(() => toast("Imagen copiada. Pegala en el chat."), openSheet);
+    } catch (_) { openSheet(); }
+  });
+  async function openSheet() { $("#sheetImg").src = URL.createObjectURL(await imgP); $("#sheet").hidden = false; }
+  $("#sheetClose").addEventListener("click", () => $("#sheet").hidden = true);
+  $("#sheet").addEventListener("click", (e) => { if (e.target.id === "sheet") $("#sheet").hidden = true; });
+  $("#copyLink").addEventListener("click", () => Comodin.copyText(Comodin.linkOf(current), $("#shareLink"), "Link copiado"));
+  $("#copyMsg").addEventListener("click", () => Comodin.copyText(msgOf(current), $("#shareLink"), "Mensaje copiado"));
+  $("#againBtn").addEventListener("click", () => {
+    $("#shareBlock").hidden = true; current = null; previewDraft(); Comodin.showFront();
+    $("#formBlock").scrollIntoView({ block: "start" }); $("#nombre").focus();
+  });
+
+  $("#nombre").addEventListener("input", previewDraft);
+  $("#search").addEventListener("input", renderRegistry);
+
+  $("#emitBtn").addEventListener("click", async () => {
+    const nombre = $("#nombre").value.trim().replace(/\s+/g, " ");
+    const telRaw = $("#telefono").value.trim();
+    const telefono = Comodin.normPhone(telRaw);
+    const nota = $("#nota").value.trim();
+    const err = $("#formErr");
+    err.hidden = true;
+    if (!nombre) { err.textContent = "Poné al menos el nombre, así sabés de quién es."; err.hidden = false; $("#nombre").focus(); return; }
+    if (telRaw && telefono.length < 10) { err.textContent = "Ese número parece incompleto. Probá con característica, ej: 351 555 1234."; err.hidden = false; $("#telefono").focus(); return; }
+    const btn = $("#emitBtn"); btn.disabled = true; btn.textContent = "Guardando…";
+    try {
+      const e = await mutate((d) => {
+        const n = d.emisiones.reduce((m, x) => Math.max(m, x.n || 0), 0) + 1;
+        const rec = { n, nombre, telefono, nota, fecha: today(), creado: new Date().toISOString(), canjeado: false, canjeadoEl: null };
+        d.emisiones.push(rec); return rec;
+      }, (rec) => `Comodín Nº ${pad(rec.n)} para ${rec.nombre}`);
+      $("#nombre").value = ""; $("#telefono").value = ""; $("#nota").value = "";
+      renderAll(); showShare(e);
+      toast(`Comodín Nº ${pad(e.n)} emitido`);
+    } catch (e) {
+      err.textContent = e.msg || "No se pudo guardar. Probá de nuevo."; err.hidden = false;
+    }
+    btn.disabled = false; renderAll();
+  });
+
+  $("#reloadBtn").addEventListener("click", async () => {
+    try { await load(); renderAll(); toast("Registro actualizado"); } catch (e) { toast(e.msg || "No se pudo actualizar."); }
+  });
+
+  async function connect(t) {
+    token = t;
+    await load();
+    store.set(t);
+    showConnected(true);
+    renderAll();
+  }
+  $("#connectBtn").addEventListener("click", async () => {
+    const t = $("#token").value.trim();
+    const err = $("#setupErr"); err.hidden = true;
+    if (!t) { err.textContent = "Pegá el token primero."; err.hidden = false; return; }
+    $("#connectBtn").disabled = true; $("#connectBtn").textContent = "Conectando…";
+    try { await connect(t); $("#token").value = ""; toast("Conectado"); }
+    catch (e) { err.textContent = e.msg || "No pude conectar."; err.hidden = false; token = ""; }
+    $("#connectBtn").disabled = false; $("#connectBtn").textContent = "Conectar";
+  });
+  $("#logoutBtn").addEventListener("click", () => {
+    store.set(""); token = ""; data = { emisiones: [] }; sha = null;
+    $("#shareBlock").hidden = true; showConnected(false); renderAll();
+  });
+
+  // arranque
+  Comodin.render({ n: 1, nombre: "", fecha: today() });
+  Comodin.deal();
+  if (token) {
+    showConnected(true);
+    load().then(renderAll).catch((e) => {
+      if (e.code === "auth" || e.code === "repo") { showConnected(false); $("#setupErr").textContent = e.msg; $("#setupErr").hidden = false; }
+      else toast(e.msg || "No pude leer el registro.");
+    });
+  } else showConnected(false);
+})();
+</script>
+</body>
+</html>
