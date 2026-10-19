@@ -90,6 +90,10 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .ink { opacity: .9; }
 .front { --ink: #172644; }
 .front .ink { opacity: .95; }
+/* en la terracota el grano se nota más: se atenúa un tercio con un velo del mismo color */
+.front .paper { background-image: linear-gradient(rgba(201, 130, 85, .32), rgba(201, 130, 85, .32)), url("papel.jpg"); background-size: auto, cover; background-blend-mode: normal, soft-light; }
+.front .paper::before { opacity: .55; }
+.front .paper::after { opacity: .36; }
 .frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 /* perforación */
 .notch { position: absolute; top: 104.4cqw; width: 7.2cqw; height: 7.2cqw; border-radius: 50%; background: var(--bg); z-index: 2; }

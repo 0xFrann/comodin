@@ -283,7 +283,7 @@
     const x = ink.getContext("2d");
     const cover = (img) => { const r = Math.max(W / img.width, H / img.height), w = img.width * r, h = img.height * r; return [(W - w) / 2, (H - h) / 2, w, h]; };
     const paperLayer = (img, mode, alpha) => { if (!img) return; pc.save(); shape(pc, W, H, 6 * u); pc.clip(); pc.globalCompositeOperation = mode; pc.globalAlpha = alpha; pc.drawImage(img, ...cover(img)); pc.restore(); };
-    paperLayer(texImg.base, "soft-light", 1);
+    paperLayer(texImg.base, "soft-light", .68);
     // filete
     x.strokeStyle = INK; x.lineWidth = 1.1 * u; concave(x, W, H, 4.6 * u, 10.6 * u); x.stroke();
     x.fillStyle = INK;
@@ -325,8 +325,8 @@
     const lw = spaced(x, "EMITIDO", fLbl, L, y1 - .7 * u, .14 * 3.1 * u);
     x.font = `600 ${3.9 * u}px ${MONO}`; ls0(x); x.textBaseline = "alphabetic"; x.fillText(fmtFecha(c.fecha), L + lw + 2 * u, y1 - .7 * u);
     pc.save(); pc.globalAlpha = .95; pc.drawImage(ink, 0, 0); pc.restore();
-    paperLayer(texImg.base, "soft-light", .8);
-    paperLayer(texImg.luz, "screen", .5);
+    paperLayer(texImg.base, "soft-light", .55);
+    paperLayer(texImg.luz, "screen", .36);
     // perforación, muescas y dientes: agujeros de verdad
     const xx = x; { const x = pc;
     x.globalCompositeOperation = "destination-out";
