@@ -49,6 +49,20 @@
   }
   const waLink = (phone, text) => "https://wa.me/" + (phone || "") + "?text=" + encodeURIComponent(text);
 
+  /* ---------- texturas: papel reciclado y tinta gastada ---------- */
+  const TEX = {
+      "dark": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.01'%20numOctaves='4'%20seed='3'%20stitchTiles='stitch'%20result='m'/%3E%3CfeColorMatrix%20in='m'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20-0.9%200%200%200%200.6'%20result='mo'/%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.2'%20numOctaves='3'%20seed='8'%20stitchTiles='stitch'%20result='h'/%3E%3CfeColorMatrix%20in='h'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%201%200%200%200%200'%20result='hba'/%3E%3CfeComponentTransfer%20in='hba'%20result='hb'%3E%3CfeFuncA%20type='table'%20tableValues='0%200%200%200%200%200%200%200%200%200%20.7%200%200%200%200%200%200%200%200%200%200'/%3E%3C/feComponentTransfer%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.035'%20numOctaves='2'%20seed='51'%20stitchTiles='stitch'%20result='hfz'/%3E%3CfeColorMatrix%20in='hfz'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%209%200%200%200%20-5.1'%20result='hfm'/%3E%3CfeComposite%20in='hb'%20in2='hfm'%20operator='in'%20result='hf'/%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.75'%20numOctaves='1'%20seed='13'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20-16%200%200%200%203.9'%20result='sf'/%3E%3CfeMerge%3E%3CfeMergeNode%20in='mo'/%3E%3CfeMergeNode%20in='hf'/%3E%3CfeMergeNode%20in='sf'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E",
+      "light": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.22'%20numOctaves='3'%20seed='21'%20stitchTiles='stitch'%20result='h'/%3E%3CfeColorMatrix%20in='h'%20type='matrix'%20values='0%200%200%200%201%200%200%200%200%201%200%200%200%200%201%201%200%200%200%200'%20result='hba'/%3E%3CfeComponentTransfer%20in='hba'%20result='hb'%3E%3CfeFuncA%20type='table'%20tableValues='0%200%200%200%200%200%200%200%200%200%20.7%200%200%200%200%200%200%200%200%200%200'/%3E%3C/feComponentTransfer%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.035'%20numOctaves='2'%20seed='61'%20stitchTiles='stitch'%20result='hfz'/%3E%3CfeColorMatrix%20in='hfz'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%209%200%200%200%20-5.1'%20result='hfm'/%3E%3CfeComposite%20in='hb'%20in2='hfm'%20operator='in'%20result='hf'/%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.85'%20numOctaves='1'%20seed='31'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%201%200%200%200%200%201%200%200%200%200%201%20-16%200%200%200%203.9'%20result='sf'/%3E%3CfeMerge%3E%3CfeMergeNode%20in='hf'/%3E%3CfeMergeNode%20in='sf'/%3E%3C/feMerge%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E",
+      "wear": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.9'%20numOctaves='2'%20seed='41'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%2020%200%200%200%20-5.6'%20result='a'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E",
+      "holes": "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='400'%20height='400'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='.9'%20numOctaves='2'%20seed='41'%20stitchTiles='stitch'%20result='s'/%3E%3CfeColorMatrix%20in='s'%20type='matrix'%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%20-20%200%200%200%206.6'%20result='a'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23f%29'/%3E%3C/svg%3E"
+  };
+  Object.entries({ "--tex-dark": TEX.dark, "--tex-light": TEX.light, "--wear": TEX.wear })
+    .forEach(([k, v]) => document.documentElement.style.setProperty(k, `url("${v}")`));
+  const texImg = {};
+  const texturesReady = Promise.all(Object.entries(TEX).map(([k, src]) => new Promise((res) => {
+    const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = src;
+  })));
+
   /* ---------- tarjeta ---------- */
   const INK = "#18243B", TERRA = "#C98255", PAPER = "#E8D8BC";
   const STAR = "M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0 Z";
@@ -66,14 +80,14 @@
     const k = Math.sqrt(R * R - d * d).toFixed(2), W = 100, H = 140;
     return `M${k},${d} H${(W - k).toFixed(2)} A${R} ${R} 0 0 0 ${W - d},${k} V${(H - k).toFixed(2)} A${R} ${R} 0 0 0 ${(W - k).toFixed(2)},${H - d} H${k} A${R} ${R} 0 0 0 ${d},${(H - k).toFixed(2)} V${k} A${R} ${R} 0 0 0 ${k},${d} Z`;
   }
-  const frameSVG = `<svg class="frame" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
+  const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
-  const perfHTML = `<span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
+  const perfHTML = `<i class="tex" aria-hidden="true"></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   const cardHTML = () => `
   <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
     <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
       ${frameSVG}
-      <div class="f-top">
+      <div class="f-top ink">
         <div class="f-row">
           <div class="f-serial"><span class="f-num" data-num>—</span></div>
           <div class="f-transf"><span class="fill" data-fill="spread" data-max="9">Transferible</span></div>
@@ -85,7 +99,7 @@
         <div class="f-ex">${EXAMPLES.map((t) => `<span class="fill" data-fill="spread" data-max="7.5" data-group="ex">${esc(t)}</span>`).join("")}</div>
       </div>
       ${perfHTML}
-      <div class="f-bot">
+      <div class="f-bot ink">
         <div class="f-data">
           <span class="f-lbl">PARA</span>
           <span class="f-para fill" data-fill="shrink" data-max="9" data-para>vos</span>
@@ -96,12 +110,12 @@
     </div></div></div></div>
     <div class="face back"><div class="shadow"><div class="shape"><div class="paper">
       ${frameSVG}
-      <div class="b-body">
+      <div class="b-body ink">
         <h3 class="b-title fill" data-fill="shrink" data-max="12">Términos y condiciones</h3>
         <ul class="b-rules">${RULES.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
       </div>
       ${perfHTML}
-      <div class="b-sign">${esc(C.nombre)} · ${esc(C.rol)}</div>
+      <div class="b-sign ink">${esc(C.nombre)} · ${esc(C.rol)}</div>
     </div></div></div></div>
   </div>`;
 
@@ -163,13 +177,15 @@
     try { new ResizeObserver(() => fit(card)).observe(card); } catch (_) {}
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fit(card));
     card.addEventListener("pointerdown", (e) => {
-      drag = { x: e.clientX, y: e.clientY, ry0: ry, rx0: rx, moved: false };
+      drag = { x: e.clientX, y: e.clientY, ry0: ry, rx0: rx, base0: base, moved: false, lx: e.clientX, lt: performance.now(), vx: 0 };
       try { card.setPointerCapture(e.pointerId); } catch (_) {}
     });
     card.addEventListener("pointermove", (e) => {
       if (drag) {
         const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
         if (Math.hypot(dx, dy) > 6) drag.moved = true;
+        const now = performance.now(), dt = now - drag.lt;
+        if (dt > 0) { drag.vx = .7 * ((e.clientX - drag.lx) / dt) + .3 * drag.vx; drag.lx = e.clientX; drag.lt = now; }
         if (!drag.moved) return;
         ry = drag.ry0 + dx * 0.6;
         rx = Math.max(-32, Math.min(32, drag.rx0 - dy * 0.35));
@@ -183,7 +199,13 @@
     });
     const end = () => {
       if (!drag) return;
-      if (!drag.moved) base += 180; else base = Math.round(ry / 180) * 180;
+      if (!drag.moved) base += 180;
+      else {
+        base = Math.round(ry / 180) * 180;
+        // deslizamiento rápido: gira hacia ese lado aunque no haya pasado la mitad
+        const fresh = performance.now() - drag.lt < 90;
+        if (fresh && Math.abs(drag.vx) > .35 && base === drag.base0) base += Math.sign(drag.vx) * 180;
+      }
       ry = base; rx = 0; drag = null; apply("snap");
     };
     card.addEventListener("pointerup", end);
@@ -216,6 +238,7 @@
   async function fontsReady() {
     const f = ['900 40px "Big Shoulders Display"', '800 40px "Big Shoulders Display"', '500 40px "Big Shoulders Display"', '600 40px "IBM Plex Mono"', '500 40px "Barlow"', 'italic 600 40px "Barlow"', '600 40px "Barlow"'];
     try { await Promise.all(f.map((s) => document.fonts.load(s, "ÍÉÓÚÑº0"))); } catch (_) {}
+    await texturesReady;
   }
   function rr(x, X, Y, W, H, r) { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + W, Y, X + W, Y + H, r); x.arcTo(X + W, Y + H, X, Y + H, r); x.arcTo(X, Y + H, X, Y, r); x.arcTo(X, Y, X + W, Y, r); x.closePath(); }
   const ls0 = (x) => { if ("letterSpacing" in x) x.letterSpacing = "0px"; };
@@ -241,15 +264,6 @@
     x.lineTo(0, r); x.arc(0, 0, r, Math.PI / 2, 0, true);
     x.closePath();
   }
-  let noise = null;
-  function grain() {
-    if (noise) return noise;
-    noise = document.createElement("canvas"); noise.width = noise.height = 160;
-    const g = noise.getContext("2d"), img = g.createImageData(160, 160);
-    for (let i = 0; i < img.data.length; i += 4) { img.data[i] = 24; img.data[i + 1] = 36; img.data[i + 2] = 59; img.data[i + 3] = Math.random() < .5 ? Math.random() * 120 : 0; }
-    g.putImageData(img, 0, 0);
-    return noise;
-  }
   const measure = (x, t, font) => { x.font = font; ls0(x); return x.measureText(t).width; };
   // Dibuja el texto ocupando `width`: si sobra lugar reparte espaciado entre letras; centrado en `cy`.
   function spread(x, t, font, left, width, cy) {
@@ -269,11 +283,13 @@
   function ticketCanvas(c, W) {
     const H = Math.round(W * 1.4), u = W / 100;
     const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
-    const x = cv.getContext("2d");
-    x.fillStyle = TERRA; shape(x, W, H, 6 * u); x.fill();
-    // grano de impresión
-    x.save(); x.globalCompositeOperation = "source-atop"; x.globalAlpha = .55;
-    x.fillStyle = x.createPattern(grain(), "repeat"); x.fillRect(0, 0, W, H); x.restore();
+    const pc = cv.getContext("2d");
+    pc.fillStyle = TERRA; shape(pc, W, H, 6 * u); pc.fill();
+    // la tinta se dibuja en su propia capa para poder gastarla
+    const ink = document.createElement("canvas"); ink.width = W; ink.height = H;
+    const x = ink.getContext("2d");
+    const k = W / 340;                     // la textura conserva la escala de la tarjeta en pantalla
+    const pat = (img, size) => { const p = pc.createPattern(img, "repeat"); p.setTransform(new DOMMatrix().scale(k * size / 400)); return p; };
     // filete
     x.strokeStyle = INK; x.lineWidth = 1.1 * u; concave(x, W, H, 4.6 * u, 10.6 * u); x.stroke();
     x.fillStyle = INK;
@@ -314,13 +330,22 @@
     x.font = `900 ${fsN}px ${DISP}`; ls0(x); x.textBaseline = "middle"; x.fillText(who, L, y0 + 3.1 * u + gapD + .45 * fsN);
     const lw = spaced(x, "EMITIDO", fLbl, L, y1 - .7 * u, .14 * 3.1 * u);
     x.font = `600 ${3.9 * u}px ${MONO}`; ls0(x); x.textBaseline = "alphabetic"; x.fillText(fmtFecha(c.fecha), L + lw + 2 * u, y1 - .7 * u);
+    // tinta gastada: puntitos donde la tinta no tomó
+    if (texImg.holes) { x.globalCompositeOperation = "destination-out"; x.fillStyle = pat(texImg.holes, 260); x.fillRect(0, 0, W, H); x.globalCompositeOperation = "source-over"; }
+    pc.drawImage(ink, 0, 0);
+    // papel reciclado: manchas y fibras oscuras (multiplicar) y fibras claras (trama)
+    pc.save(); shape(pc, W, H, 6 * u); pc.clip();
+    if (texImg.dark) { pc.globalCompositeOperation = "multiply"; pc.globalAlpha = .5; pc.fillStyle = pat(texImg.dark, 400); pc.fillRect(0, 0, W, H); }
+    if (texImg.light) { pc.globalCompositeOperation = "screen"; pc.globalAlpha = .4; pc.fillStyle = pat(texImg.light, 400); pc.fillRect(0, 0, W, H); }
+    pc.restore();
     // perforación, muescas y dientes: agujeros de verdad
+    const xx = x; { const x = pc;
     x.globalCompositeOperation = "destination-out";
     const hole = (cx, cy, r) => { x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fill(); };
     for (let k = -13; k <= 13; k++) hole(50 * u + k * 3.4 * u, 108 * u, .85 * u);
     hole(0, 108 * u, 3.6 * u); hole(W, 108 * u, 3.6 * u);
     for (let px = W / 2 - Math.ceil(W / 2 / (3 * u)) * 3 * u; px <= W; px += 3 * u) { hole(px, 0, 1.15 * u); hole(px, H, 1.15 * u); }
-    x.globalCompositeOperation = "source-over";
+    x.globalCompositeOperation = "source-over"; }
     return cv;
   }
   async function makePNG(c) {

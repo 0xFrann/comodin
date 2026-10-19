@@ -16,7 +16,6 @@
   --f-display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
   --f-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.09 0 0 0 0 0.14 0 0 0 0 0.23 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
 
@@ -44,7 +43,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 
 .stage-col { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; max-width: 440px; margin: 0 auto; min-width: 0; }
 .lede { margin: 6px 0 0; text-align: center; font-size: clamp(20px, 5.4vw, 24px); line-height: 1.2; font-weight: 600; text-wrap: balance; }
-.lede em { font-weight: 500; color: var(--muted); }
+.lede em { font-style: normal; font-weight: 500; font-size: .8em; color: var(--muted); }
 
 /* ---------- el boleto ---------- */
 .stage { perspective: 1400px; width: 100%; display: flex; justify-content: center; padding-block: 6px 4px; }
@@ -83,7 +82,10 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
                 radial-gradient(circle at 50% 100%, #0000 1.15cqw, #000 calc(1.15cqw + .5px)) bottom / 3cqw 51% repeat-x; }
 .front .paper { background: var(--terra); }
 .back .paper { background: var(--paper); }
-.paper::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: var(--grain); background-size: 160px; mix-blend-mode: multiply; opacity: .4; }
+/* papel reciclado: manchas y fibras oscuras encima de todo, fibras claras en trama; la tinta se gasta con una máscara */
+.paper::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: var(--tex-dark); background-size: 400px; mix-blend-mode: multiply; opacity: .5; }
+.tex { position: absolute; inset: 0; z-index: 1; pointer-events: none; background-image: var(--tex-light); background-size: 400px; mix-blend-mode: screen; opacity: .4; }
+.ink { -webkit-mask: var(--wear) 0 0 / 260px repeat; mask: var(--wear) 0 0 / 260px repeat; }
 .frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 /* perforación */
 .notch { position: absolute; top: 104.4cqw; width: 7.2cqw; height: 7.2cqw; border-radius: 50%; background: var(--bg); z-index: 2; }
@@ -92,7 +94,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
   background: radial-gradient(circle, var(--bg) .85cqw, transparent .92cqw) center / 3.4cqw 2.4cqw repeat-x; }
 
 /* frente: composición tipo cartel, cada línea a todo el ancho */
-.f-top { position: absolute; left: 10cqw; right: 10cqw; top: 10.5cqw; height: 91cqw; display: flex; flex-direction: column; justify-content: space-between; }
+.f-top { position: absolute; left: 10cqw; right: 10cqw; top: 8.5cqw; padding-top: 2cqw; height: 93cqw; display: flex; flex-direction: column; justify-content: space-between; }
 .f-row { display: flex; align-items: stretch; gap: 4cqw; }
 .f-serial { display: flex; align-items: center; padding-right: 4cqw; border-right: 1cqw solid var(--ink); }
 .f-num { font-family: var(--f-mono); font-weight: 600; line-height: .8; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
@@ -117,7 +119,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .f-big .f-num { font-size: 12cqw; }
 
 /* dorso */
-.b-body { position: absolute; left: 13cqw; right: 13cqw; top: 17cqw; display: flex; flex-direction: column; gap: 4cqw; }
+.b-body { position: absolute; left: 13cqw; right: 13cqw; top: 13cqw; padding-top: 4cqw; display: flex; flex-direction: column; gap: 4cqw; }
 .b-title { margin: 0; font-family: var(--f-display); font-weight: 900; line-height: .9; text-transform: uppercase; margin-bottom: 2cqw; }
 .b-rules { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2.2cqw; font-size: 3.8cqw; line-height: 1.28; font-weight: 500; counter-reset: r; }
 .b-rules li { position: relative; padding-left: 6.6cqw; counter-increment: r; }
