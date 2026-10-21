@@ -36,7 +36,6 @@
     </div>
 
     <section class="about" aria-labelledby="contactTitle">
-      <p class="eyebrow">Emitido por</p>
       <h2 class="contact-name" id="contactTitle">Franco Dalmasso</h2>
       <p class="contact-role">Product Design Engineer</p>
       <dl class="contact-list">
@@ -49,12 +48,10 @@
           <button class="icon-btn" id="copyMail" type="button" aria-label="Copiar email"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg></button>
         </div>
         <div class="row">
-          <dt>LinkedIn</dt><dd><a id="lnLinkedin" target="_blank" rel="noopener">franndalmasso</a></dd>
-          <span class="arrow" aria-hidden="true">↗</span>
+          <dt>LinkedIn</dt><dd class="link-cell"><a id="lnLinkedin" target="_blank" rel="noopener"><span id="lnLinkedinText">franndalmasso</span><span class="arrow" aria-hidden="true">↗</span></a></dd>
         </div>
         <div class="row">
-          <dt>CV</dt><dd><a id="lnCv" target="_blank" rel="noopener">Ver PDF</a></dd>
-          <span class="arrow" aria-hidden="true">↗</span>
+          <dt>CV</dt><dd class="link-cell"><a id="lnCv" target="_blank" rel="noopener"><span>Ver PDF</span><span class="arrow" aria-hidden="true">↗</span></a></dd>
         </div>
       </dl>
     </section>
@@ -76,7 +73,7 @@
   $("#copyPhone").addEventListener("click", () => Comodin.copyText(phone, $("#phoneText"), "Teléfono copiado"));
   $("#copyMail").addEventListener("click", () => Comodin.copyText(C.email, $("#mailText"), "Email copiado"));
   $("#lnLinkedin").href = C.linkedin;
-  $("#lnLinkedin").textContent = C.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "");
+  $("#lnLinkedinText").textContent = C.linkedin.replace(/^https?:\/\/(www\.)?linkedin\.com\/in\//, "").replace(/\/$/, "");
   $("#lnCv").href = C.cv;
 
   function route() {
