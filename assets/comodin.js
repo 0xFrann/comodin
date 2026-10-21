@@ -76,6 +76,10 @@
   const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
   const perfHTML = `<span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
+  // Grosor: láminas del mismo contorno apiladas entre el frente y el dorso; al girar forman el canto.
+  const EDGE_N = 8;
+  const edgeHTML = Array.from({ length: EDGE_N }, (_, i) =>
+    `<div class="slice${i < EDGE_N / 2 ? " s-front" : " s-back"}" style="--i:${i}" aria-hidden="true"><div class="shape"><div class="paper"></div></div><span class="notch l"></span><span class="notch r"></span></div>`).join("");
   const cardHTML = () => `
   <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
     <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
@@ -101,6 +105,7 @@
         <div class="f-big"><span class="f-num" data-num>—</span></div>
       </div>
     </div></div></div></div>
+    ${edgeHTML}
     <div class="face back"><div class="shadow"><div class="shape"><div class="paper">
       ${frameSVG}
       <div class="b-body ink">
@@ -156,7 +161,7 @@
   // Dos capas: .tilt inclina la tarjeta al pasar el mouse (solo desktop) y .card gira al tocar o arrastrar.
   // Así la inclinación nunca interrumpe la animación del giro.
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let card, tilt, base = 0, ry = 0, rx = 0, drag = null;
+  let card, tilt, pop, base = 0, ry = 0, rx = 0, drag = null;
   function apply(mode) {
     card.style.transition = reduced ? "none"
       : mode === "snap" ? "transform .75s cubic-bezier(.2,.85,.25,1)"
@@ -167,8 +172,9 @@
   function unlean() { tilt.style.transform = "rotateX(0deg) rotateY(0deg)"; }
   function flip() { base += 180; ry = base; rx = 0; apply("snap"); }
   function showFront() { base = Math.round(base / 360) * 360; ry = base; rx = 0; apply("snap"); }
-  function mount(stage) {
-    stage.innerHTML = `<div class="tilt">${cardHTML()}</div>`;
+  function mount(stage, opts = {}) {
+    stage.innerHTML = `<div class="pop${opts.intro ? " pending" : ""}"><div class="tilt">${cardHTML()}</div></div>`;
+    pop = $(".pop", stage);
     tilt = $(".tilt", stage);
     card = $("#card", stage);
     try { new ResizeObserver(() => fit(card)).observe(card); } catch (_) {}
@@ -212,7 +218,22 @@
     card.addEventListener("lostpointercapture", end);
     card.addEventListener("pointerleave", (e) => { if (!drag && e.pointerType === "mouse") unlean(); });
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+    if (opts.intro) intro();
     return card;
+  }
+  // Entrada: espera tipografías y textura (o 2,5 s como máximo), aparece con un rebote y da un giro completo.
+  function intro() {
+    const fontsOk = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    const ready = Promise.all([fontsOk, texturesReady]);
+    const timeout = new Promise((res) => setTimeout(res, 2500));
+    Promise.race([ready, timeout]).then(() => {
+      fit(card);
+      requestAnimationFrame(() => {
+        pop.classList.remove("pending");
+        if (reduced) return;
+        setTimeout(() => { base += 360; ry = base; rx = 0; apply("deal"); }, 420);
+      });
+    });
   }
   function deal() {
     if (reduced) { apply("none"); return; }

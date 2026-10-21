@@ -63,7 +63,7 @@
 <script>
 (function () {
   const { C, $, pad, firstName, esc } = Comodin;
-  Comodin.mount($("#stage"));
+  Comodin.mount($("#stage"), { intro: true });
 
   $("#contactTitle").textContent = C.nombre;
   $(".contact-role").textContent = C.rol;
@@ -90,7 +90,6 @@
   }
   addEventListener("hashchange", () => { route(); Comodin.showFront(); });
   route();
-  Comodin.deal();
 })();
 </script>
 </body>

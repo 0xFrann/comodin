@@ -47,6 +47,8 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 
 /* ---------- el boleto ---------- */
 .stage { perspective: 1400px; width: 100%; display: flex; justify-content: center; padding-block: 6px 4px; }
+.pop { transform-style: preserve-3d; transition: transform .6s cubic-bezier(.2, 1.5, .4, 1), opacity .35s ease-out; }
+.pop.pending { opacity: 0; transform: translateY(24px) scale(.82); transition: none; }
 .tilt { transform-style: preserve-3d; transition: transform .35s cubic-bezier(.2,.8,.3,1); max-width: 100%; }
 .card {
   position: relative;
@@ -63,7 +65,15 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .card:active { cursor: grabbing; }
 .card:focus-visible .face { outline: 3px solid var(--accent); outline-offset: 6px; }
 .face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; container-type: inline-size; color: var(--ink); }
-.face.back { transform: rotateY(180deg); }
+/* grosor de la cartulina: las caras se separan --t y las láminas llenan el canto */
+.card { --t: 4px; }
+.face.front { transform: translateZ(calc(var(--t) / 2)); }
+.face.back { transform: rotateY(180deg) translateZ(calc(var(--t) / 2)); }
+.slice { position: absolute; inset: 0; container-type: inline-size; pointer-events: none;
+  transform: translateZ(calc(var(--t) / 2 - var(--t) * (var(--i) + .5) / 8)); }
+.slice .paper { background: #A6683F; }
+.slice.s-back .paper { background: #B9A27C; }
+.slice .paper::before, .slice .paper::after { display: none; }
 .shadow { position: absolute; inset: 0; filter: drop-shadow(0 10px 14px rgba(3, 6, 16, .6)) drop-shadow(0 1px 1px rgba(3, 6, 16, .5)); }
 /* esquinas cóncavas */
 .shape { position: absolute; inset: 0;
@@ -241,6 +251,6 @@ input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 
 .sheet-inner p { margin: 0; font-size: 14px; color: var(--muted); text-align: center; }
 
 @media (prefers-reduced-motion: reduce) {
-  .card, .tilt { transition: none !important; }
+  .card, .tilt, .pop { transition: none !important; }
   .toast { transition: none; }
 }
