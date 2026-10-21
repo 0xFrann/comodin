@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg"], ["luz", "papel-luz.jpg"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021135743"], ["luz", "papel-luz.jpg?v=20261021135743"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
@@ -77,7 +77,7 @@
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
   const perfHTML = `<i class="sheen" aria-hidden="true"></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   // Grosor: láminas del mismo contorno apiladas entre el frente y el dorso; al girar forman el canto.
-  const EDGE_N = 8;
+  const EDGE_N = 4;
   const edgeHTML = Array.from({ length: EDGE_N }, (_, i) =>
     `<div class="slice${i < EDGE_N / 2 ? " s-front" : " s-back"}" style="--i:${i}" aria-hidden="true"><div class="shape"><div class="paper"></div></div><span class="notch l"></span><span class="notch r"></span></div>`).join("");
   const cardHTML = () => `
@@ -180,8 +180,8 @@
     const k = nx.toFixed(3) + ny.toFixed(3);
     const amt = Math.min(1, Math.hypot(nx, ny) * 3);
     card.style.setProperty("--sheen-o", amt.toFixed(3));
-    card.style.setProperty("--sheen-f", (50 - nx * 75).toFixed(1) + "%");
-    card.style.setProperty("--sheen-b", (50 + nx * 75).toFixed(1) + "%");
+    card.style.setProperty("--sheen-f", (nx * 25).toFixed(2) + "%");
+    card.style.setProperty("--sheen-b", (-nx * 25).toFixed(2) + "%");
     calm = k === lastN ? calm + 1 : 0; lastN = k;
     raf = calm < 12 ? requestAnimationFrame(light) : 0;
   }
@@ -201,7 +201,7 @@
     card.addEventListener("pointerdown", (e) => {
       if (e.button > 0) return;
       e.preventDefault();
-      drag = { x: e.clientX, y: e.clientY, ry0: ry, rx0: rx, base0: base, moved: false, lx: e.clientX, lt: performance.now(), vx: 0 };
+      drag = { x: e.clientX, y: e.clientY, ry0: ry, rx0: rx, base0: base, moved: false, lt: e.timeStamp, pts: [[e.timeStamp, e.clientX]] };
       try { card.setPointerCapture(e.pointerId); } catch (_) {}
       unlean();
     });
@@ -209,8 +209,8 @@
       if (drag) {
         const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
         if (Math.hypot(dx, dy) > 6) drag.moved = true;
-        const now = performance.now(), dt = now - drag.lt;
-        if (dt > 0) { drag.vx = .7 * ((e.clientX - drag.lx) / dt) + .3 * drag.vx; drag.lx = e.clientX; drag.lt = now; }
+        drag.lt = e.timeStamp; drag.pts.push([e.timeStamp, e.clientX]);
+        while (drag.pts.length > 2 && e.timeStamp - drag.pts[0][0] > 100) drag.pts.shift();
         if (!drag.moved) return;
         ry = drag.ry0 + dx * 0.6;
         rx = Math.max(-32, Math.min(32, drag.rx0 - dy * 0.35));
@@ -220,20 +220,23 @@
         lean((e.clientX - r.left) / r.width - .5, (e.clientY - r.top) / r.height - .5);
       }
     });
-    const end = () => {
+    const end = (e) => {
       if (!drag) return;
       if (!drag.moved) base += 180;
       else {
         base = Math.round(ry / 180) * 180;
         // deslizamiento rápido: gira hacia ese lado aunque no haya pasado la mitad
-        const fresh = performance.now() - drag.lt < 90;
-        if (fresh && Math.abs(drag.vx) > .35 && base === drag.base0) base += Math.sign(drag.vx) * 180;
+        // velocidad real de los últimos 100 ms (no depende de cuántos cuadros logre el teléfono)
+        const t = e && e.timeStamp ? e.timeStamp : performance.now(), a = drag.pts[0], z = drag.pts[drag.pts.length - 1];
+        const vx = z[0] > a[0] ? (z[1] - a[1]) / (z[0] - a[0]) : 0;
+        if (t - drag.lt < 120 && Math.abs(vx) > .3 && base === drag.base0) base += Math.sign(vx) * 180;
       }
       ry = base; rx = 0; drag = null; apply("snap");
     };
     card.addEventListener("pointerup", end);
     card.addEventListener("pointercancel", end);
-    card.addEventListener("lostpointercapture", end);
+    // solo si la tarjeta misma pierde el puntero (el aviso de un hijo también sube y cortaba el gesto)
+    card.addEventListener("lostpointercapture", (e) => { if (e.target === card) end(e); });
     card.addEventListener("pointerleave", (e) => { if (!drag && e.pointerType === "mouse") unlean(); });
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
     if (opts.intro) intro();

@@ -36,3 +36,7 @@ El link no lleva cifrado real: la clave está en `config.js`, que es público. S
 En el registro podés buscar, ver la nota, marcar como canjeado y volver a compartir cualquier comodín.
 
 Si cambiás la `clave` en `config.js`, los links ya enviados siguen mostrando el número pero pierden el nombre.
+
+## Antes de cada deploy
+
+Corré `python3 herramientas/version.py`. Le pone una versión nueva (`?v=...`) a los estilos, scripts e imágenes, así los navegadores bajan lo nuevo en vez de usar lo que tenían guardado.
