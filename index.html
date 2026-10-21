@@ -27,15 +27,18 @@
   <section class="stage-col">
     <p class="lede" id="lede">Gracias por tu tiempo.<br><em>Te devuelvo un poco del mío.</em></p>
     <div class="stage" id="stage"></div>
-    <div class="hint">
-      <span>Arrastralo para moverlo · tocalo para darlo vuelta</span>
-      <button class="chip-btn" id="flipBtn" type="button">Dar vuelta</button>
-    </div>
+    <p class="hint">Arrastralo para moverlo · tocalo para darlo vuelta</p>
 
     <div class="actions">
       <a class="btn primary" id="btnCanjear" target="_blank" rel="noopener">Canjear este comodín <small>por WhatsApp</small></a>
       <a class="btn" id="btnPasar" target="_blank" rel="noopener">Pasárselo a alguien</a>
+      <p class="fine">Si conocés a alguien a quien le sirva más que a vos, pasáselo. Para eso está.</p>
+    </div>
 
+    <section class="about" aria-labelledby="contactTitle">
+      <p class="eyebrow">Emitido por</p>
+      <h2 class="contact-name" id="contactTitle">Franco Dalmasso</h2>
+      <p class="contact-role">Product Design Engineer</p>
       <dl class="contact-list">
         <div class="row">
           <dt>Teléfono</dt><dd class="sel" id="phoneText"></dd>
@@ -54,8 +57,7 @@
           <span class="arrow" aria-hidden="true">↗</span>
         </div>
       </dl>
-      <p class="fine">Si conocés a alguien a quien le sirva más que a vos, pasáselo. Para eso está.</p>
-    </div>
+    </section>
   </section>
 </main>
 
@@ -65,8 +67,9 @@
 (function () {
   const { C, $, pad, firstName, esc } = Comodin;
   Comodin.mount($("#stage"));
-  $("#flipBtn").addEventListener("click", Comodin.flip);
 
+  $("#contactTitle").textContent = C.nombre;
+  $(".contact-role").textContent = C.rol;
   const phone = Comodin.prettyPhone(C.whatsapp);
   $("#phoneText").textContent = phone;
   $("#mailText").textContent = C.email;

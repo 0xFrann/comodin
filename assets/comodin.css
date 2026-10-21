@@ -137,7 +137,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .b-name { font-weight: 600; font-size: 4.2cqw; }
 .b-role { font-weight: 500; font-size: 3.8cqw; opacity: .82; }
 
-.hint { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 14px; text-align: center; }
+.hint { margin: 0; color: var(--muted); font-size: 14px; text-align: center; }
 .chip-btn { font: 600 14px var(--f-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); padding: 6px 12px; cursor: pointer; text-decoration: none; }
 .chip-btn:hover { border-color: var(--accent); }
 .chip-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -161,7 +161,11 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .contact { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
 .mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
 .contact .mono { color: var(--fg); user-select: all; -webkit-user-select: all; }
-.contact-list { width: 100%; margin: 6px 0 0; border-top: 1px solid var(--line); }
+.about { width: 100%; margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--line); display: flex; flex-direction: column; align-items: stretch; text-align: left; color: var(--fg); }
+.about .eyebrow { margin: 0 0 8px; }
+.contact-name { margin: 0; color: var(--fg); font-family: var(--f-display); font-weight: 800; font-size: 30px; line-height: 1; text-transform: uppercase; letter-spacing: .01em; }
+.contact-role { margin: 4px 0 14px; color: var(--muted); font-size: 15px; }
+.contact-list { width: 100%; margin: 0; border-top: 1px solid var(--line); }
 .contact-list .row { display: grid; grid-template-columns: 5.2em minmax(0, 1fr) 40px; align-items: center; gap: 10px; min-height: 48px; border-bottom: 1px solid var(--line); }
 .contact-list dt { font-family: var(--f-mono); font-weight: 700; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .contact-list dd { margin: 0; min-width: 0; font-size: 15px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }

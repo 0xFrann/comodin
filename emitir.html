@@ -126,7 +126,6 @@
 
     <div class="stage-col">
       <div class="stage" id="stage"></div>
-      <div class="hint"><button class="chip-btn" id="flipBtn" type="button">Dar vuelta</button></div>
     </div>
 
     <div class="block">
@@ -247,7 +246,6 @@
   let current = null, imgP = null, justIssued = null;
 
   Comodin.mount($("#stage"));
-  $("#flipBtn").addEventListener("click", Comodin.flip);
   $$(".repoName").forEach((el) => el.textContent = REPO);
 
   /* ---------- GitHub ---------- */
