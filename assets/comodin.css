@@ -115,12 +115,13 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .fill { white-space: nowrap; display: inline-block; align-self: flex-start; }
 .f-transf .fill { align-self: center; }
 .f-transf .fill, .f-canje { font-family: var(--f-display); font-weight: 800; line-height: .9; text-transform: uppercase; }
+.f-canje { font-weight: 900; }
 .f-vale { font-family: var(--f-display); font-weight: 900; line-height: .8; padding-top: 1cqw; }
 .f-ex { display: flex; flex-direction: column; gap: 2.4cqw; }
 .f-ex .fill { font-family: var(--f-display); font-weight: 700; line-height: .92; text-transform: uppercase; }
 .f-bot { position: absolute; left: 10cqw; right: 10cqw; top: 112cqw; bottom: 10.5cqw; display: flex; justify-content: space-between; align-items: stretch; gap: 4cqw; }
 .f-data { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; flex: 1; }
-.f-lbl { font-family: var(--f-mono); font-weight: 600; font-size: 3.1cqw; letter-spacing: .14em; line-height: 1; }
+.f-lbl { font-family: var(--f-mono); font-weight: 700; font-size: 3.1cqw; letter-spacing: .14em; line-height: 1; }
 .f-para { font-family: var(--f-display); font-weight: 900; line-height: .9; text-transform: uppercase; }
 .f-issued { display: flex; align-items: baseline; gap: 2cqw; line-height: 1; }
 .f-fecha { font-family: var(--f-mono); font-weight: 600; font-size: 3.9cqw; }

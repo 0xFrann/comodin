@@ -87,7 +87,7 @@
         </div>
         <div class="f-rule"></div>
         <div class="f-vale-row">${starSVG}<span class="f-vale fill" data-fill="spread" data-max="32" data-inset="star">VALE</span>${starSVG}</div>
-        <span class="f-canje fill" data-fill="spread" data-max="7">Canjeable por</span>
+        <span class="f-canje fill" data-fill="spread" data-max="9">Canjeable por</span>
         <div class="f-rule"></div>
         <div class="f-ex">${EXAMPLES.map((t) => `<span class="fill" data-fill="spread" data-max="7.5" data-group="ex">${esc(t)}</span>`).join("")}</div>
       </div>
@@ -236,7 +236,7 @@
   /* ---------- imagen (canvas) ---------- */
   const DISP = '"Big Shoulders Display", "Arial Narrow", sans-serif', MONO = '"IBM Plex Mono", Menlo, monospace';
   async function fontsReady() {
-    const f = ['900 40px "Big Shoulders Display"', '800 40px "Big Shoulders Display"', '500 40px "Big Shoulders Display"', '600 40px "IBM Plex Mono"', '500 40px "Barlow"', 'italic 600 40px "Barlow"', '600 40px "Barlow"'];
+    const f = ['900 40px "Big Shoulders Display"', '800 40px "Big Shoulders Display"', '500 40px "Big Shoulders Display"', '600 40px "IBM Plex Mono"', '700 40px "IBM Plex Mono"', '500 40px "Barlow"', 'italic 600 40px "Barlow"', '600 40px "Barlow"'];
     try { await Promise.all(f.map((s) => document.fonts.load(s, "ÍÉÓÚÑº0"))); } catch (_) {}
     await texturesReady;
   }
@@ -302,7 +302,7 @@
     const fsT = fitFs(x, "TRANSFERIBLE", 800, DISP, 9 * u, tW);
     const h1 = Math.max(8 * u, .9 * fsT);
     const valeW = CW - 24 * u, fsV = fitFs(x, "VALE", 900, DISP, 32 * u, valeW), hv = Math.max(9 * u, .8 * fsV + u);
-    const canje = up("Canjeable por"), fsC = fitFs(x, canje, 800, DISP, 7 * u, CW), hc = .9 * fsC;
+    const canje = up("Canjeable por"), fsC = fitFs(x, canje, 900, DISP, 9 * u, CW), hc = .9 * fsC;
     const ex = EXAMPLES.map(up), fsE = Math.min(...ex.map((t) => fitFs(x, t, 700, DISP, 7.5 * u, CW))), he = 3 * .92 * fsE + 4.8 * u;
     const gap = (91 * u - (h1 + u + hv + hc + u + he)) / 5;
     let y = 10.5 * u;
@@ -316,7 +316,7 @@
     [[L, y + hv / 2], [R - 9 * u, y + hv / 2]].forEach(([sx, sy]) => { x.save(); x.translate(sx, sy - 4.5 * u); x.scale(.09 * u, .09 * u); x.fill(star); x.restore(); });
     spread(x, "VALE", `900 ${fsV}px ${DISP}`, L + 12 * u, valeW, y + u + .4 * fsV);
     y += hv + gap;
-    spread(x, canje, `800 ${fsC}px ${DISP}`, L, CW, y + .45 * fsC);
+    spread(x, canje, `900 ${fsC}px ${DISP}`, L, CW, y + .45 * fsC);
     y += hc + gap; x.fillRect(L, y, CW, u); y += u + gap;
     ex.forEach((t) => { spread(x, t, `700 ${fsE}px ${DISP}`, L, CW, y + .46 * fsE); y += .92 * fsE + 2.4 * u; });
     // talón
@@ -324,7 +324,7 @@
     const fBig = `600 ${12 * u}px ${MONO}`, bigW = measure(x, num, fBig), bx = R - bigW - 5 * u;
     x.fillRect(bx, y0, u, y1 - y0);
     x.font = fBig; x.textBaseline = "middle"; x.fillText(num, bx + 5 * u, (y0 + y1) / 2);
-    const dataW = bx - 4 * u - L, fLbl = `600 ${3.1 * u}px ${MONO}`;
+    const dataW = bx - 4 * u - L, fLbl = `700 ${3.1 * u}px ${MONO}`;
     spaced(x, "PARA", fLbl, L, y0 + 2.3 * u, .14 * 3.1 * u);
     const who = up(c.nombre || "vos"), fsN = fitFs(x, who, 900, DISP, 9 * u, dataW);
     const gapD = (y1 - y0 - 3.1 * u - .9 * fsN - 3.9 * u) / 2;
