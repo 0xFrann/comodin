@@ -60,13 +60,12 @@
   /* ---------- tarjeta ---------- */
   const INK = "#172644", TERRA = "#C98255", PAPER = "#D9C4A0";
   const STAR = "M50 0 C54 34 66 46 100 50 C66 54 54 66 50 100 C46 66 34 54 0 50 C34 46 46 34 50 0 Z";
-  const EXAMPLES = ["Reunión de trabajo · café ·", "charla de bar · lavar el auto", "· vos elegís ·"];
+  const EXAMPLES = ["Reunión de trabajo · café ·", "charla de bar · lavar el auto", "· vos proponés ·"];
   const RULES = [
-    "Vale por un día mío. Vos elegís para qué: un desafío de tu negocio, un proyecto, esa idea que te da vueltas o lavarte el auto.",
+    "Te doy una mano por un día con lo que necesites: tu negocio, un proyecto o esa idea que te da vueltas. Si es lavar el auto mientras charlamos, también vale. Confío en tu criterio.",
     "Para canjearlo, escribime y armamos el plan juntos.",
     "Se puede regalar. Si conocés a alguien a quien le sirva más, pasáselo.",
-    "No vence, pero no lo dejes juntando polvo en el chat.",
-    "Casi todo vale. Confío en tu criterio."
+    "No vence, pero no lo dejes juntando polvo en el chat."
   ];
   function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
   // Contorno con esquinas cóncavas, concéntricas al corte del boleto (unidades: ancho 100 × alto 140).
@@ -88,7 +87,7 @@
         </div>
         <div class="f-rule"></div>
         <div class="f-vale-row">${starSVG}<span class="f-vale fill" data-fill="spread" data-max="32" data-inset="star">VALE</span>${starSVG}</div>
-        <span class="f-canje fill" data-fill="spread" data-max="7">Canjeable por 1 día con ${esc(C.corto)}</span>
+        <span class="f-canje fill" data-fill="spread" data-max="7">Canjeable por</span>
         <div class="f-rule"></div>
         <div class="f-ex">${EXAMPLES.map((t) => `<span class="fill" data-fill="spread" data-max="7.5" data-group="ex">${esc(t)}</span>`).join("")}</div>
       </div>
@@ -109,7 +108,7 @@
         <ul class="b-rules">${RULES.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
       </div>
       ${perfHTML}
-      <div class="b-sign ink">${esc(C.nombre)} · ${esc(C.rol)}</div>
+      <div class="b-sign ink"><span class="b-name">${esc(C.nombre)}</span><span class="b-role">${esc(C.rol)}</span></div>
     </div></div></div></div>
   </div>`;
 
@@ -303,8 +302,8 @@
     const fsT = fitFs(x, "TRANSFERIBLE", 800, DISP, 9 * u, tW);
     const h1 = Math.max(8 * u, .9 * fsT);
     const valeW = CW - 24 * u, fsV = fitFs(x, "VALE", 900, DISP, 32 * u, valeW), hv = Math.max(9 * u, .8 * fsV + u);
-    const canje = up(`Canjeable por 1 día con ${C.corto}`), fsC = fitFs(x, canje, 800, DISP, 7 * u, CW), hc = .9 * fsC;
-    const ex = EXAMPLES.map(up), fsE = Math.min(...ex.map((t) => fitFs(x, t, 500, DISP, 7.5 * u, CW))), he = 3 * .92 * fsE + 4.8 * u;
+    const canje = up("Canjeable por"), fsC = fitFs(x, canje, 800, DISP, 7 * u, CW), hc = .9 * fsC;
+    const ex = EXAMPLES.map(up), fsE = Math.min(...ex.map((t) => fitFs(x, t, 700, DISP, 7.5 * u, CW))), he = 3 * .92 * fsE + 4.8 * u;
     const gap = (91 * u - (h1 + u + hv + hc + u + he)) / 5;
     let y = 10.5 * u;
     // fila 1: número | transferible
@@ -319,7 +318,7 @@
     y += hv + gap;
     spread(x, canje, `800 ${fsC}px ${DISP}`, L, CW, y + .45 * fsC);
     y += hc + gap; x.fillRect(L, y, CW, u); y += u + gap;
-    ex.forEach((t) => { spread(x, t, `500 ${fsE}px ${DISP}`, L, CW, y + .46 * fsE); y += .92 * fsE + 2.4 * u; });
+    ex.forEach((t) => { spread(x, t, `700 ${fsE}px ${DISP}`, L, CW, y + .46 * fsE); y += .92 * fsE + 2.4 * u; });
     // talón
     const y0 = 112 * u, y1 = H - 10.5 * u;
     const fBig = `600 ${12 * u}px ${MONO}`, bigW = measure(x, num, fBig), bx = R - bigW - 5 * u;

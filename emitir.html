@@ -298,7 +298,7 @@
   /* ---------- helpers ---------- */
   const maxN = () => data.emisiones.reduce((m, e) => Math.max(m, e.n || 0), 0);
   const byN = (n) => data.emisiones.find((e) => e.n === n);
-  const msgOf = (e) => `¡Hola${e.nombre ? " " + firstName(e.nombre) : ""}! Gracias por tu tiempo. Te dejo un comodín: vale por 1 día mío, para lo que quieras 🎫\n${Comodin.linkOf(e)}`;
+  const msgOf = (e) => `¡Hola${e.nombre ? " " + firstName(e.nombre) : ""}! Gracias por tu tiempo. Te dejo un vale por un día, para lo que necesites 🎫\n${Comodin.linkOf(e)}`;
   function validPhone(raw) { const t = Comodin.normPhone(raw); return !raw.trim() || t.length >= 10 ? t : null; }
 
   /* ---------- navegación ---------- */

@@ -117,7 +117,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .f-transf .fill, .f-canje { font-family: var(--f-display); font-weight: 800; line-height: .9; text-transform: uppercase; }
 .f-vale { font-family: var(--f-display); font-weight: 900; line-height: .8; padding-top: 1cqw; }
 .f-ex { display: flex; flex-direction: column; gap: 2.4cqw; }
-.f-ex .fill { font-family: var(--f-display); font-weight: 500; line-height: .92; text-transform: uppercase; }
+.f-ex .fill { font-family: var(--f-display); font-weight: 700; line-height: .92; text-transform: uppercase; }
 .f-bot { position: absolute; left: 10cqw; right: 10cqw; top: 112cqw; bottom: 10.5cqw; display: flex; justify-content: space-between; align-items: stretch; gap: 4cqw; }
 .f-data { display: flex; flex-direction: column; justify-content: space-between; min-width: 0; flex: 1; }
 .f-lbl { font-family: var(--f-mono); font-weight: 600; font-size: 3.1cqw; letter-spacing: .14em; line-height: 1; }
@@ -128,12 +128,14 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .f-big .f-num { font-size: 12cqw; }
 
 /* dorso */
-.b-body { position: absolute; left: 13cqw; right: 13cqw; top: 13cqw; padding-top: 4cqw; display: flex; flex-direction: column; gap: 4cqw; }
-.b-title { margin: 0; font-family: var(--f-display); font-weight: 900; line-height: .9; text-transform: uppercase; margin-bottom: 2cqw; }
-.b-rules { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2.2cqw; font-size: 3.8cqw; line-height: 1.28; font-weight: 500; counter-reset: r; }
-.b-rules li { position: relative; padding-left: 6.6cqw; counter-increment: r; }
-.b-rules li::before { content: counter(r, decimal-leading-zero); position: absolute; left: 0; top: .45cqw; font-family: var(--f-mono); font-weight: 600; font-size: 3.1cqw; letter-spacing: .02em; }
-.b-sign { position: absolute; left: 13cqw; right: 13cqw; top: 120cqw; text-align: center; font-family: var(--f-mono); font-weight: 600; font-size: 2.9cqw; letter-spacing: .02em; line-height: 1.35; }
+.b-body { position: absolute; left: 13cqw; right: 13cqw; top: 13cqw; padding-top: 4cqw; display: flex; flex-direction: column; gap: 3cqw; }
+.b-title { margin: 0; font-family: var(--f-display); font-weight: 900; line-height: .9; text-transform: uppercase; margin-bottom: 1cqw; }
+.b-rules { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 1.9cqw; font-size: 4.2cqw; line-height: 1.17; font-weight: 500; counter-reset: r; }
+.b-rules li { position: relative; padding-left: 7.4cqw; counter-increment: r; }
+.b-rules li::before { content: counter(r, decimal-leading-zero); position: absolute; left: 0; top: .5cqw; font-family: var(--f-mono); font-weight: 600; font-size: 3.5cqw; letter-spacing: .02em; }
+.b-sign { position: absolute; left: 13cqw; right: 13cqw; top: 112cqw; bottom: 10.5cqw; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.2cqw; text-align: center; font-family: var(--f-mono); letter-spacing: .02em; line-height: 1.2; }
+.b-name { font-weight: 600; font-size: 4.2cqw; }
+.b-role { font-weight: 500; font-size: 3.8cqw; opacity: .82; }
 
 .hint { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; color: var(--muted); font-size: 14px; text-align: center; }
 .chip-btn { font: 600 14px var(--f-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line); padding: 6px 12px; cursor: pointer; text-decoration: none; }

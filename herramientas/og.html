@@ -37,7 +37,7 @@
   x.fillStyle = "#A7B1C4"; x.font = '600 20px "IBM Plex Mono"'; ls("4px"); x.fillText("TRANSFERIBLE · NO VENCE", 560, 168); ls("0px");
   x.fillStyle = "#E8D8BC"; x.font = '900 76px "Big Shoulders Display"'; x.fillText("TENÉS UN", 556, 252);
   x.fillStyle = "#C98255"; x.font = '900 196px "Big Shoulders Display"'; ls("12px"); x.fillText("VALE", 550, 420); ls("0px");
-  x.fillStyle = "#E8D8BC"; x.font = 'italic 600 34px "Barlow"'; x.fillText(`Canjeable por 1 día con ${C.corto}.`, 560, 478);
+  x.fillStyle = "#E8D8BC"; x.font = 'italic 600 34px "Barlow"'; x.fillText("Por un día, para lo que necesites.", 560, 478);
   x.fillStyle = "#A7B1C4"; x.font = '600 21px "IBM Plex Mono"'; x.fillText("Abrilo y dalo vuelta ↻", 560, 524);
   document.getElementById("dl").addEventListener("click", () => {
     cv.toBlob((b) => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "og.png"; a.click(); });
