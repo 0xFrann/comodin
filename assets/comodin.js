@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021135743"], ["luz", "papel-luz.jpg?v=20261021135743"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021140311"], ["luz", "papel-luz.jpg?v=20261021140311"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
@@ -75,7 +75,7 @@
   }
   const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
-  const perfHTML = `<i class="sheen" aria-hidden="true"></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
+  const perfHTML = `<i class="sheen" aria-hidden="true"><i class="sh-shade"></i><i class="sh-glint"><i class="sh-band"></i></i></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   // Grosor: láminas del mismo contorno apiladas entre el frente y el dorso; al girar forman el canto.
   const EDGE_N = 4;
   const edgeHTML = Array.from({ length: EDGE_N }, (_, i) =>
@@ -165,7 +165,8 @@
   function apply(mode) {
     card.style.transition = reduced ? "none"
       : mode === "snap" ? "transform .75s cubic-bezier(.2,.85,.25,1)"
-      : mode === "deal" ? "transform 1.3s cubic-bezier(.2,.8,.2,1)" : "none";
+      : mode === "deal" ? "transform 1.3s cubic-bezier(.2,.8,.2,1)"
+      : mode === "intro" ? "transform 2.4s cubic-bezier(.3,.6,.2,1)" : "none";
     card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
     if (tilt) wake();
   }
@@ -252,7 +253,7 @@
       requestAnimationFrame(() => {
         pop.classList.remove("pending");
         if (reduced) return;
-        setTimeout(() => { base += 360; ry = base; rx = 0; apply("deal"); }, 420);
+        setTimeout(() => { base += 360; ry = base; rx = 0; apply("intro"); }, 420);
       });
     });
   }
