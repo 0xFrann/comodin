@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021140311"], ["luz", "papel-luz.jpg?v=20261021140311"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021153409"], ["luz", "papel-luz.jpg?v=20261021153409"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
@@ -76,10 +76,10 @@
   const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
   const perfHTML = `<i class="sheen" aria-hidden="true"><i class="sh-shade"></i><i class="sh-glint"><i class="sh-band"></i></i></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
-  // Grosor: láminas del mismo contorno apiladas entre el frente y el dorso; al girar forman el canto.
-  const EDGE_N = 4;
-  const edgeHTML = Array.from({ length: EDGE_N }, (_, i) =>
-    `<div class="slice${i < EDGE_N / 2 ? " s-front" : " s-back"}" style="--i:${i}" aria-hidden="true"><div class="shape"><div class="paper"></div></div><span class="notch l"></span><span class="notch r"></span></div>`).join("");
+  // Canto real en los laterales: planos perpendiculares a la tarjeta entre las esquinas cóncavas y la muesca.
+  // Arriba y abajo no lleva (los dientes no se pueden simular bien y casi no se ven con la inclinación limitada).
+  const edgeHTML = ["l", "r"].map((side) =>
+    `<i class="edge ${side} e1" aria-hidden="true"></i><i class="edge ${side} e2" aria-hidden="true"></i>`).join("");
   const cardHTML = () => `
   <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
     <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
@@ -179,13 +179,15 @@
     const o = m.transformPoint(new DOMPoint(0, 0, 0)), z = m.transformPoint(new DOMPoint(0, 0, 1));
     const nx = z.x - o.x, ny = z.y - o.y;
     const k = nx.toFixed(3) + ny.toFixed(3);
-    const amt = Math.min(1, Math.hypot(nx, ny) * 3);
+    const amt = Math.min(1, IDLE + Math.hypot(nx, ny) * 2.2);
     card.style.setProperty("--sheen-o", amt.toFixed(3));
-    card.style.setProperty("--sheen-f", (nx * 25).toFixed(2) + "%");
-    card.style.setProperty("--sheen-b", (-nx * 25).toFixed(2) + "%");
+    card.style.setProperty("--sheen-f", (REST + nx * 25).toFixed(2) + "%");
+    card.style.setProperty("--sheen-b", (REST - nx * 25).toFixed(2) + "%");
     calm = k === lastN ? calm + 1 : 0; lastN = k;
     raf = calm < 12 ? requestAnimationFrame(light) : 0;
   }
+  // En reposo la luz queda prendida, como una lámpara arriba a la izquierda; al moverse parte de ahí.
+  const IDLE = .5, REST = 9;
   function wake() { calm = 0; if (!raf && !reduced) raf = requestAnimationFrame(light); }
   function lean(px, py) { if (!reduced) { tilt.style.transform = `rotateX(${-py * 10}deg) rotateY(${px * 14}deg)`; wake(); } }
   function unlean() { tilt.style.transform = "rotateX(0deg) rotateY(0deg)"; wake(); }
@@ -240,6 +242,7 @@
     card.addEventListener("lostpointercapture", (e) => { if (e.target === card) end(e); });
     card.addEventListener("pointerleave", (e) => { if (!drag && e.pointerType === "mouse") unlean(); });
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
+    wake();
     if (opts.intro) intro();
     return card;
   }
