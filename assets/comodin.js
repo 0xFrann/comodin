@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021153409"], ["luz", "papel-luz.jpg?v=20261021153409"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021153632"], ["luz", "papel-luz.jpg?v=20261021153632"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
@@ -76,10 +76,6 @@
   const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
   const perfHTML = `<i class="sheen" aria-hidden="true"><i class="sh-shade"></i><i class="sh-glint"><i class="sh-band"></i></i></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
-  // Canto real en los laterales: planos perpendiculares a la tarjeta entre las esquinas cóncavas y la muesca.
-  // Arriba y abajo no lleva (los dientes no se pueden simular bien y casi no se ven con la inclinación limitada).
-  const edgeHTML = ["l", "r"].map((side) =>
-    `<i class="edge ${side} e1" aria-hidden="true"></i><i class="edge ${side} e2" aria-hidden="true"></i>`).join("");
   const cardHTML = () => `
   <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
     <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
@@ -105,7 +101,6 @@
         <div class="f-big"><span class="f-num" data-num>—</span></div>
       </div>
     </div></div></div></div>
-    ${edgeHTML}
     <div class="face back"><div class="shadow"><div class="shape"><div class="paper">
       ${frameSVG}
       <div class="b-body ink">
