@@ -74,6 +74,11 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .slice .paper { background: #A6683F; }
 .slice.s-back .paper { background: #B9A27C; }
 .slice .paper::before, .slice .paper::after { display: none; }
+/* luz y sombra según la orientación: una franja de luz con los bordes en sombra que se desplaza al girar */
+.sheen { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(105deg, rgba(10, 14, 35, .3) 0%, rgba(10, 14, 35, 0) 34%, rgba(255, 240, 215, 0) 40%, rgba(255, 240, 215, .24) 50%, rgba(255, 240, 215, 0) 60%, rgba(10, 14, 35, 0) 66%, rgba(10, 14, 35, .3) 100%) 0 0 / 240% 100% no-repeat;
+  background-position: var(--sheen-f, 50%) 0; opacity: var(--sheen-o, 0); }
+.back .sheen { background-position: var(--sheen-b, 50%) 0; }
 .shadow { position: absolute; inset: 0; filter: drop-shadow(0 10px 14px rgba(3, 6, 16, .6)) drop-shadow(0 1px 1px rgba(3, 6, 16, .5)); }
 /* esquinas cóncavas */
 .shape { position: absolute; inset: 0;

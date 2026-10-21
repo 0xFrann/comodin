@@ -75,7 +75,7 @@
   }
   const frameSVG = `<svg class="frame ink" viewBox="0 0 100 140" preserveAspectRatio="none" aria-hidden="true"><path d="${framePath(4.6, 10.6)}" fill="none" style="stroke:var(--ink)" stroke-width="1.1"/></svg>`;
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
-  const perfHTML = `<span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
+  const perfHTML = `<i class="sheen" aria-hidden="true"></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   // Grosor: láminas del mismo contorno apiladas entre el frente y el dorso; al girar forman el canto.
   const EDGE_N = 8;
   const edgeHTML = Array.from({ length: EDGE_N }, (_, i) =>
@@ -167,9 +167,27 @@
       : mode === "snap" ? "transform .75s cubic-bezier(.2,.85,.25,1)"
       : mode === "deal" ? "transform 1.3s cubic-bezier(.2,.8,.2,1)" : "none";
     card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+    if (tilt) wake();
   }
-  function lean(px, py) { if (!reduced) tilt.style.transform = `rotateX(${-py * 10}deg) rotateY(${px * 14}deg)`; }
-  function unlean() { tilt.style.transform = "rotateX(0deg) rotateY(0deg)"; }
+  // Luz y sombra: se lee la orientación real (giro + inclinación, también durante las transiciones)
+  // y se mueve un barrido de luz en cada cara. Solo corre mientras la tarjeta se mueve.
+  let raf = 0, calm = 0, lastN = "";
+  const M = (el) => { const t = getComputedStyle(el).transform; return t && t !== "none" ? new DOMMatrix(t) : new DOMMatrix(); };
+  function light() {
+    const m = M(tilt).multiply(M(card));
+    const o = m.transformPoint(new DOMPoint(0, 0, 0)), z = m.transformPoint(new DOMPoint(0, 0, 1));
+    const nx = z.x - o.x, ny = z.y - o.y;
+    const k = nx.toFixed(3) + ny.toFixed(3);
+    const amt = Math.min(1, Math.hypot(nx, ny) * 3);
+    card.style.setProperty("--sheen-o", amt.toFixed(3));
+    card.style.setProperty("--sheen-f", (50 - nx * 75).toFixed(1) + "%");
+    card.style.setProperty("--sheen-b", (50 + nx * 75).toFixed(1) + "%");
+    calm = k === lastN ? calm + 1 : 0; lastN = k;
+    raf = calm < 12 ? requestAnimationFrame(light) : 0;
+  }
+  function wake() { calm = 0; if (!raf && !reduced) raf = requestAnimationFrame(light); }
+  function lean(px, py) { if (!reduced) { tilt.style.transform = `rotateX(${-py * 10}deg) rotateY(${px * 14}deg)`; wake(); } }
+  function unlean() { tilt.style.transform = "rotateX(0deg) rotateY(0deg)"; wake(); }
   function flip() { base += 180; ry = base; rx = 0; apply("snap"); }
   function showFront() { base = Math.round(base / 360) * 360; ry = base; rx = 0; apply("snap"); }
   function mount(stage, opts = {}) {
