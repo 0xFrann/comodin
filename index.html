@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Tenés un comodín">
 <meta property="og:description" content="Un vale de Franco por un día, para lo que necesites. Abrilo y dalo vuelta.">
-<meta property="og:image" content="https://0xfrann.github.io/comodin/og.png?v=20261021215021">
+<meta property="og:image" content="https://0xfrann.github.io/comodin/og.png?v=20261021215411">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
-<link rel="stylesheet" href="assets/comodin.css?v=20261021215021">
+<link rel="stylesheet" href="assets/comodin.css?v=20261021215411">
 </head>
 <body>
 <main>
@@ -55,8 +55,8 @@
   </section>
 </main>
 
-<script src="assets/config.js?v=20261021215021"></script>
-<script src="assets/comodin.js?v=20261021215021"></script>
+<script src="assets/config.js?v=20261021215411"></script>
+<script src="assets/comodin.js?v=20261021215411"></script>
 <script>
 (function () {
   const { C, $, pad, firstName, esc } = Comodin;
@@ -79,9 +79,9 @@
     $("#lede").innerHTML = c.nombre
       ? `Gracias por tu tiempo, ${esc(firstName(c.nombre))}.<br><em>Te devuelvo un poco del mío.</em>`
       : `Gracias por tu tiempo.<br><em>Te devuelvo un poco del mío.</em>`;
-    $("#btnCanjear").href = Comodin.waLink(C.whatsapp, `¡Hola ${C.corto}! Tengo el comodín${n} y quiero canjearlo 🎫`);
+    $("#btnCanjear").href = Comodin.waLink(C.whatsapp, `¡Hola ${C.corto}! Tengo el vale${n} y quiero canjearlo 🎫`);
     $("#btnPasar").href = Comodin.waLink("", c.n
-      ? `Te paso este comodín de ${C.corto}: vale por 1 día de su tiempo y creo que a vos te sirve más 🎫\n${Comodin.passLinkOf(c)}`
+      ? `Te paso este vale de ${C.corto}: te da una mano por un día con lo que necesites. Creo que a vos te sirve más que a mí 🎫\n${Comodin.passLinkOf(c)}`
       : `Mirá esto: ${C.base}`);
   }
   addEventListener("hashchange", () => { route(); Comodin.showFront(); });

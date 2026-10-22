@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021215021"], ["luz", "papel-luz.jpg?v=20261021215021"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021215411"], ["luz", "papel-luz.jpg?v=20261021215411"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
@@ -251,7 +251,7 @@
       requestAnimationFrame(() => {
         pop.classList.remove("pending");
         if (reduced) return;
-        setTimeout(() => { base += 360; ry = base; rx = 0; apply("intro"); }, 420);
+        setTimeout(() => { base -= 360; ry = base; rx = 0; apply("intro"); }, 420);
       });
     });
   }

@@ -75,7 +75,7 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .sh-shade, .sh-band { position: absolute; top: 0; bottom: 0; left: -100%; width: 300%; transform: translateX(var(--sx)); }
 .sh-shade { background: linear-gradient(105deg, rgba(10, 14, 35, .26) 0%, rgba(10, 14, 35, .08) 25%, rgba(10, 14, 35, 0) 40%, rgba(10, 14, 35, 0) 60%, rgba(10, 14, 35, .08) 75%, rgba(10, 14, 35, .26) 100%); }
 .sh-glint { position: absolute; inset: 0; overflow: hidden;
-  -webkit-mask: url("papel-relieve.png?v=20261021215021") center / cover; mask: url("papel-relieve.png?v=20261021215021") center / cover; }
+  -webkit-mask: url("papel-relieve.png?v=20261021215411") center / cover; mask: url("papel-relieve.png?v=20261021215411") center / cover; }
 .sh-band { background: linear-gradient(105deg, rgba(255, 244, 225, 0) 24%, rgba(255, 244, 225, .18) 38%, rgba(255, 244, 225, .42) 50%, rgba(255, 244, 225, .18) 62%, rgba(255, 244, 225, 0) 76%); }
 .shadow { position: absolute; inset: 0; filter: drop-shadow(0 10px 14px rgba(3, 6, 16, .6)) drop-shadow(0 1px 1px rgba(3, 6, 16, .5)); }
 /* esquinas cóncavas */
@@ -98,14 +98,14 @@ main { max-width: 1000px; margin: 0 auto; padding-block: 24px 56px; }
 .back .paper { background: var(--paper); }
 /* papel: la foto en luz suave sobre el color de cada cara; la tinta va encima con opacidad y la textura
    vuelve por arriba en luz suave (grano sobre la tinta) y en trama (brillos de las fibras) */
-.paper { isolation: isolate; background-image: url("papel.jpg?v=20261021215021"); background-position: center; background-size: cover; background-blend-mode: soft-light; }
-.paper::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("papel.jpg?v=20261021215021") center / cover; mix-blend-mode: soft-light; opacity: .8; }
-.paper::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("papel-luz.jpg?v=20261021215021") center / cover; mix-blend-mode: screen; opacity: .5; }
+.paper { isolation: isolate; background-image: url("papel.jpg?v=20261021215411"); background-position: center; background-size: cover; background-blend-mode: soft-light; }
+.paper::before { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("papel.jpg?v=20261021215411") center / cover; mix-blend-mode: soft-light; opacity: .8; }
+.paper::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: url("papel-luz.jpg?v=20261021215411") center / cover; mix-blend-mode: screen; opacity: .5; }
 .ink { opacity: .9; }
 .front { --ink: #172644; }
 .front .ink { opacity: .95; }
 /* en la terracota el grano se nota más: se atenúa un tercio con un velo del mismo color */
-.front .paper { background-image: linear-gradient(rgba(201, 130, 85, .32), rgba(201, 130, 85, .32)), url("papel.jpg?v=20261021215021"); background-size: auto, cover; background-blend-mode: normal, soft-light; }
+.front .paper { background-image: linear-gradient(rgba(201, 130, 85, .32), rgba(201, 130, 85, .32)), url("papel.jpg?v=20261021215411"); background-size: auto, cover; background-blend-mode: normal, soft-light; }
 .front .paper::before { opacity: .55; }
 .front .paper::after { opacity: .36; }
 .frame { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
