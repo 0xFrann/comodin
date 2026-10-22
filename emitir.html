@@ -7,14 +7,14 @@
 <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Comodín">
-<title>Emisor de Comodines</title>
+<meta name="apple-mobile-web-app-title" content="Vale">
+<title>Emisor de Vales</title>
 <meta name="theme-color" content="#0B1222">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'%3E%3Crect width='100' height='140' rx='12' fill='%23E8D8BC'/%3E%3Cpath d='M30 40h40L50 70zM50 70L30 100h40z' fill='%2318243B'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
-<link rel="stylesheet" href="assets/comodin.css?v=20261021215411">
+<link rel="stylesheet" href="assets/comodin.css?v=20261021215520">
 <style>
   /* Emisor: app de una sola columna con barra de pestañas abajo, pensada para el pulgar. */
   body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
@@ -63,7 +63,7 @@
 <body>
 <main class="app">
   <div class="appbar">
-    <button class="backlink" id="backBtn" type="button" hidden>‹ Comodines</button>
+    <button class="backlink" id="backBtn" type="button" hidden>‹ Vales</button>
     <h1 id="screenTitle">Emitir</h1>
   </div>
 
@@ -89,7 +89,7 @@
   <!-- Emitir -->
   <section class="screen" id="scr-emitir" hidden>
     <div class="block">
-      <p class="eyebrow">Próximo comodín · <span class="mono" id="nextNum">Nº —</span></p>
+      <p class="eyebrow">Próximo vale · <span class="mono" id="nextNum">Nº —</span></p>
       <div class="field">
         <label for="nombre">Nombre <span class="muted">(va en la tarjeta)</span></label>
         <input type="text" id="nombre" maxlength="40" autocomplete="off" placeholder="Ej: Martina Gómez">
@@ -102,7 +102,7 @@
         <label for="nota">Nota <span class="muted">(solo para vos)</span></label>
         <textarea id="nota" maxlength="600" placeholder="Dónde se conocieron, de qué hablaron, qué podría necesitar…"></textarea>
       </div>
-      <button class="btn primary" id="emitBtn" type="button">Emitir comodín</button>
+      <button class="btn primary" id="emitBtn" type="button">Emitir vale</button>
       <p class="note err" id="formErr" hidden></p>
     </div>
   </section>
@@ -111,7 +111,7 @@
   <section class="screen" id="scr-lista" hidden>
     <div class="block">
       <div class="settings-row">
-        <p class="eyebrow" id="count">Sin comodines todavía</p>
+        <p class="eyebrow" id="count">Sin vales todavía</p>
         <button class="linkish" id="reloadBtn" type="button">Actualizar</button>
       </div>
       <input type="search" id="search" placeholder="Buscar por nombre, teléfono o nota" aria-label="Buscar">
@@ -181,7 +181,7 @@
     <div class="block danger" id="deleteBlock" hidden>
       <p class="eyebrow">Borrar</p>
       <p class="note">Solo se puede borrar el último emitido, así la numeración no queda con huecos.</p>
-      <button class="btn danger-btn" id="deleteBtn" type="button">Borrar este comodín</button>
+      <button class="btn danger-btn" id="deleteBtn" type="button">Borrar este vale</button>
       <div class="row2" id="deleteConfirm" hidden>
         <button class="btn" id="deleteCancel" type="button">Cancelar</button>
         <button class="btn danger-solid" id="deleteYes" type="button">Sí, borrar</button>
@@ -212,7 +212,7 @@
   </button>
   <button class="tab" data-go="lista" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></svg>
-    Comodines
+    Vales
     <span class="badge" id="badge" hidden></span>
   </button>
   <button class="tab" data-go="ajustes" type="button">
@@ -223,14 +223,14 @@
 
 <div class="sheet" id="sheet" hidden>
   <div class="sheet-inner">
-    <img id="sheetImg" alt="Imagen del comodín para compartir">
+    <img id="sheetImg" alt="Imagen del vale para compartir">
     <p>Mantené presionada la imagen para copiarla o guardarla.</p>
     <button class="btn primary" id="sheetClose" type="button">Listo</button>
   </div>
 </div>
 
-<script src="assets/config.js?v=20261021215411"></script>
-<script src="assets/comodin.js?v=20261021215411"></script>
+<script src="assets/config.js?v=20261021215520"></script>
+<script src="assets/comodin.js?v=20261021215520"></script>
 <script>
 (function () {
   const { C, $, $$, pad, today, fmtFecha, firstName, esc, toast } = Comodin;
@@ -315,7 +315,7 @@
   $("#backBtn").addEventListener("click", () => go("lista"));
 
   function route() {
-    if (!token) { show("setup", "Comodín"); return; }
+    if (!token) { show("setup", "Vale"); return; }
     const h = location.hash.replace(/^#/, "") || "emitir";
     const m = /^c-(\d+)$/.exec(h);
     if (m) {
@@ -326,7 +326,7 @@
       show("detalle", `<span class="mono">Nº ${pad(e.n)}</span>`);
       return;
     }
-    if (h === "lista") { renderList(); show("lista", "Comodines"); return; }
+    if (h === "lista") { renderList(); show("lista", "Vales"); return; }
     if (h === "ajustes") { show("ajustes", "Ajustes"); return; }
     renderEmit(); show("emitir", "Emitir");
   }
@@ -356,7 +356,7 @@
         const n = d.emisiones.reduce((m, x) => Math.max(m, x.n || 0), 0) + 1;
         const rec = { n, nombre, telefono, nota, fecha: today(), creado: new Date().toISOString(), canjeado: false, canjeadoEl: null };
         d.emisiones.push(rec); return rec;
-      }, (rec) => `Comodín Nº ${pad(rec.n)} para ${rec.nombre}`);
+      }, (rec) => `Vale Nº ${pad(rec.n)} para ${rec.nombre}`);
       $("#nombre").value = ""; $("#telefono").value = ""; $("#nota").value = "";
       justIssued = e.n; renderBadge();
       go("c-" + pad(e.n));
@@ -372,7 +372,7 @@
     const all = [...data.emisiones].sort((a, b) => b.n - a.n);
     const list = all.filter((e) => !q || [e.nombre, e.telefono, e.nota].some((v) => (v || "").toLowerCase().includes(q)));
     const canj = all.filter((e) => e.canjeado).length;
-    $("#count").textContent = all.length ? `${all.length} emitidos · ${canj} canjeados` : "Sin comodines todavía";
+    $("#count").textContent = all.length ? `${all.length} emitidos · ${canj} canjeados` : "Sin vales todavía";
     $("#regEmpty").hidden = all.length > 0;
     const ul = $("#registry"); ul.innerHTML = "";
     list.forEach((e) => {

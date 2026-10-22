@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021215411"], ["luz", "papel-luz.jpg?v=20261021215411"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021215520"], ["luz", "papel-luz.jpg?v=20261021215520"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
@@ -77,7 +77,7 @@
   const starSVG = `<svg class="f-star" viewBox="0 0 100 100" aria-hidden="true"><path d="${STAR}" style="fill:var(--ink)"/></svg>`;
   const perfHTML = `<i class="sheen" aria-hidden="true"><i class="sh-shade"></i><i class="sh-glint"><i class="sh-band"></i></i></i><span class="notch l"></span><span class="notch r"></span><div class="perf"></div>`;
   const cardHTML = () => `
-  <div class="card" id="card" tabindex="0" role="button" aria-label="Comodín. Tocá para darlo vuelta.">
+  <div class="card" id="card" tabindex="0" role="button" aria-label="Vale. Tocá para darlo vuelta.">
     <div class="face front"><div class="shadow"><div class="shape"><div class="paper">
       ${frameSVG}
       <div class="f-top ink">
@@ -148,7 +148,7 @@
     $$("[data-num]").forEach((el) => el.textContent = current.n ? pad(current.n) : "—");
     $("[data-para]").textContent = current.nombre || "vos";
     $("[data-fecha]").textContent = fmtFecha(current.fecha);
-    $("#card").setAttribute("aria-label", `Comodín${current.n ? " Nº " + pad(current.n) : ""}${current.nombre ? " para " + current.nombre : ""}. Tocá para darlo vuelta.`);
+    $("#card").setAttribute("aria-label", `Vale${current.n ? " Nº " + pad(current.n) : ""}${current.nombre ? " para " + current.nombre : ""}. Tocá para darlo vuelta.`);
     fit($("#card"));
   }
 

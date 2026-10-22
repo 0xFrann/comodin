@@ -1,4 +1,4 @@
-# Comodín
+# Vale de Franco
 
 Una tarjeta digital, numerada, que vale por 1 día de Franco. Se emite desde el celular en medio de una charla y se manda por WhatsApp.
 
@@ -33,7 +33,7 @@ El link no lleva cifrado real: la clave está en `config.js`, que es público. S
 2. Tocás **Emitir**: se guarda en el registro con el próximo número.
 3. **Enviar a … por WhatsApp** abre el chat con esa persona y el mensaje con el link. **Compartir la imagen** manda la tarjeta como foto (en celulares que lo permiten).
 
-En el registro podés buscar, ver la nota, marcar como canjeado y volver a compartir cualquier comodín.
+En el registro podés buscar, ver la nota, marcar como canjeado y volver a compartir cualquier vale.
 
 Si cambiás la `clave` en `config.js`, los links ya enviados siguen mostrando el número pero pierden el nombre.
 
