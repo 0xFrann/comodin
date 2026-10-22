@@ -53,7 +53,7 @@
   /* ---------- texturas del papel ---------- */
   const ASSETS = (document.currentScript && document.currentScript.src) || location.href;
   const texImg = {};
-  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021214710"], ["luz", "papel-luz.jpg?v=20261021214710"]].map(([k, f]) => new Promise((res) => {
+  const texturesReady = Promise.all([["base", "papel.jpg?v=20261021215021"], ["luz", "papel-luz.jpg?v=20261021215021"]].map(([k, f]) => new Promise((res) => {
     const im = new Image(); im.onload = () => { texImg[k] = im; res(); }; im.onerror = () => res(); im.src = new URL(f, ASSETS).href;
   })));
 
